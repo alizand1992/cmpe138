@@ -6,14 +6,22 @@ USE stock_exchange
 
 -- STOCK
 CREATE TABLE stocks (
-       id int not null unique auto_increment,
-       label varchar(5) not null unique,
-       company_name varchar(64) not null,
-       primary key (id)
+       id INT NOT NULL UNIQUE auto_increment,
+       label VARCHAR(5) NOT NULL UNIQUE,
+       company_name VARCHAR(64) NOT NULL,
+       PRIMARY KEY (id)
 );
 
 
 -- TRANSACTION
+CREATE TABLE transactions (
+       id INT NOT NULL UNIQUE auto_increment,
+       stock_id INT NOT NULL,
+       num_stock INT NOT NULL,
+       price DECIMAL(10,4) NOT NULL,
+       FOREIGN KEY (stock_id)
+               REFERENCES stocks(id)
+);
 
 -- BANK ACCOUNT
 
