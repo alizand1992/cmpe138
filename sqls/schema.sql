@@ -24,7 +24,54 @@ CREATE TABLE transactions (
 );
 
 -- BANK ACCOUNT
+CREATE TABLE bank_acct (
+        id INT NOT NULL UNIQUE auto_increment,
+        account_no INT NOT NULL,
+        routing_no INT NOT NULL,
+        FOREIGN KEY (account_no)
+                REFERENCES user(id)
+);
 
--- PORTFOLIA
+-- PORTFOLIO
+CREATE TABLE portfolio (
+        id INT NOT NULL UNIQUE auto_increment,
+        funds INT NOT NULL,
+);
 
--- USER, TRADER, ADMIN
+-- USER
+CREATE TABLE user (
+        id INT NOT NULL UNIQUE auto_increment,
+        u_id INT NOT NULL,
+        user_name VARCHAR(64) NOT NULL,
+        password VARCHAR(64) NOT NULL,
+        f_name VARCHAR(64) NOT NULL,
+        l_name VARCHAR(64) NOT NULL,
+        bday VARCHAR(64) NOT NULL,
+        PRIMARY KEY (id)
+);
+
+-- TRADER
+CREATE TABLE trader (
+        id INT NOT NULL UNIQUE auto_increment,
+        trade_id INT NOT NULL,
+        trade_user_name VARCHAR(64) NOT NULL,
+        password VARCHAR(64) NOT NULL,
+        f_name VARCHAR(64) NOT NULL,
+        l_name VARCHAR(64) NOT NULL,
+        bday VARCHAR(64) NOT NULL,
+        FOREIGN KEY (trade_id)
+                REFERENCES user(id)
+);
+
+-- ADMIN
+CREATE TABLE administrator (
+        id INT NOT NULL UNIQUE auto_increment,
+        admin_id INT NOT NULL,
+        admin_user_name VARCHAR(64) NOT NULL,
+        password VARCHAR(64) NOT NULL,
+        f_name VARCHAR(64) NOT NULL,
+        l_name VARCHAR(64) NOT NULL,
+        bday VARCHAR(64) NOT NULL,
+        FOREIGN KEY (admin_id)
+                REFERENCES user(id)
+);
