@@ -39,10 +39,10 @@ CREATE TABLE portfolio (
 );
 
 -- USER
-CREATE TABLE user (
+CREATE TABLE users (
         id INT NOT NULL UNIQUE auto_increment,
-        u_id INT NOT NULL,
-        user_name VARCHAR(64) NOT NULL,
+        username VARCHAR(64) NOT NULL,
+        screen_name VARCHAR(64),
         password VARCHAR(64) NOT NULL,
         f_name VARCHAR(64) NOT NULL,
         l_name VARCHAR(64) NOT NULL,
@@ -51,27 +51,18 @@ CREATE TABLE user (
 );
 
 -- TRADER
-CREATE TABLE trader (
+CREATE TABLE traders (
         id INT NOT NULL UNIQUE auto_increment,
-        trade_id INT NOT NULL,
-        trade_user_name VARCHAR(64) NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        f_name VARCHAR(64) NOT NULL,
-        l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
-        FOREIGN KEY (trade_id)
+        user_id INT NOT NULL,
+        port_id INT NOT NULL,
+        FOREIGN KEY (user_id)
                 REFERENCES user(id)
 );
 
 -- ADMIN
-CREATE TABLE administrator (
+CREATE TABLE admins (
         id INT NOT NULL UNIQUE auto_increment,
-        admin_id INT NOT NULL,
-        admin_user_name VARCHAR(64) NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        f_name VARCHAR(64) NOT NULL,
-        l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
-        FOREIGN KEY (admin_id)
+        user_id INT NOT NULL,
+        FOREIGN KEY (user_id)
                 REFERENCES user(id)
 );

@@ -32,10 +32,8 @@ $container[UserController::class] = function($c) {
 include '../app/routes/users.php';
 
 $app->get('/', function (Request $request, Response $response, array $args) {
+    echo phpinfo();
 
-    $response = $this->view->render($response, '/user/login.html', ['test' => 'test']);
-
-    return $response;
 });
 
 $app->run();
