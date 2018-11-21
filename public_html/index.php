@@ -22,8 +22,13 @@ $container['view'] = function($container) {
     return $view;
 };
 
-//Define app routes
+$container[UserController::class] = function($c) {
+    $view = $c->get('view');
+    return new app\controllers\UserController($view);
+};
 
+
+//Define app routes
 include '../app/routes/users.php';
 
 $app->get('/', function (Request $request, Response $response, array $args) {
