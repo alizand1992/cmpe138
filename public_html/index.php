@@ -15,15 +15,14 @@ $container = $app->getContainer();
 $container['view'] = new PhpRenderer("../app/views/");
 
 //Define app routes
+
+include '../app/routes/users.php';
+
 $app->get('/', function (Request $request, Response $response, array $args) {
     $response->getBody()->write("Hello");
+
     $response = $this->view->render($response, '/user/login.php', ['test' => 'test']);
 
-    return $response;
-});
-
-$app->get('/user/login', function (Request $request, Response $response) {
-    $response = $this->view->render($response, 'user/login.php', []);
     return $response;
 });
 
