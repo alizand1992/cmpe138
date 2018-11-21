@@ -4,6 +4,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\PhpRenderer;
 
 $app->get('/user/login', function (Request $request, Response $response) {
-    $response = $this->view->render($response, 'user/login.php', []);
+    $response = $this->view->render($response, 'user/login.html', []);
     return $response;
 });
