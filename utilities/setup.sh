@@ -26,7 +26,7 @@ sudo bash -c "cat > /etc/apache2/sites-available/000-default.conf <<EOF
 
     <Directory $project_dir>
         Options Indexes FollowSymLinks
-        AllowOverride None
+        AllowOverride All
         Require all granted
     </Directory>
 
@@ -53,6 +53,7 @@ EOF"
 
 echo $password | sudo -S a2ensite 000-default.conf
 echo $password | sudo -S a2enmod php7.2
+echo $password | sudo -S a2enmod rewrite
 echo $password | sudo -S service apache2 restart
 
 cat <<EOF
