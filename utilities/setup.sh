@@ -6,6 +6,7 @@ echo $password | sudo -S apt-get upgrade -y
 echo $password | sudo -S apt-get install -y apache2 mysql-server php7.2 libapache2-mod-php7.2
 
 project_dir=$(echo $PWD | rev | cut -c11-100 | rev)
+project_dir="$project_dir/public_html"
 
 sudo bash -c "cat > /etc/apache2/sites-available/000-default.conf <<EOF
 <VirtualHost *:80>
@@ -18,6 +19,7 @@ sudo bash -c "cat > /etc/apache2/sites-available/000-default.conf <<EOF
 	# However, you must set it for any further virtual host explicitly.
 	# ServerName www.example.com
     # This has been modified by bash
+    # The index was moved to public_html in this setup version
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot $project_dir
