@@ -22,7 +22,7 @@ class UserController {
         $password = password_hash( $args['password'], PASSWORD_DEFAULT);
 
         $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-        $mysqli = new \mysqli('localhost', 'username', 'password', 'database');
+        $mysqli = new \mysqli('localhost', 'se_user', 'se_user_password', 'stock_exchange');
 
         if ($mysqli->connect_errno) {
             return $res->withRedirect("login?errorno=$mysqli->connect_errno");
