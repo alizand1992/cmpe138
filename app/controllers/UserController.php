@@ -31,13 +31,8 @@ class UserController {
             return $this->register($req, $res, $data);
         }
 
-        $email = $data['email'];
-        $query = "SELECT * FROM users WHERE username='$email'";
-        $result = $mysqli->query($query);
-
-        if ($result->num_rows != 0) {
-            $mysqli->close();
-            $data["error"] = "The email is already registered.";
+        if (\app\models\User::exists($data['username'])) {
+             $data["error"] = "The email is already registered.";
             return $this->register($req, $res, $data);
         }
 
@@ -56,8 +51,8 @@ class UserController {
 
     public function createSession($req, $res, $args) {
         $data = $req->getParams();
-        $username = $data["email"];
-        $password = password_hash(trim($data['password']), PASSWORD_DEFAULT);
+        $username = $data["username"];
+        $password = password_hash(trim($data["password"]), PASSWORD_DEFAULT);
 
         $query = "SELECT * FROM users WHERE username='$username'";
         $mysqli = new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
@@ -80,13 +75,9 @@ class UserController {
     }
 
     public function profile($req, $res, $args) {
-        $user_id = $_SESSION["user_id"];
-        $user_query = "SELECT * FROM users WHERE id='$user_id'";
-        $mysqli = new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
+        $user = \app\models\User::find($_SESSION["user_id"]);
 
-        $result = $mysqli->query($user_query);
-        $args = $result->fetch_array(MYSQLI_ASSOC);
-        $args["type"] = "Trader";
-        return $this->view->render($res, 'user/profile.html', $args);
+        var_dump($user);
+        return $this->view->render($res, 'user/profile.html', (array)$user);
     }
 }

@@ -32,6 +32,8 @@ CREATE TABLE traders (
         PRIMARY KEY (id),
         FOREIGN KEY (user_id)
                 REFERENCES users(id)
+        FOREIGN KEY (port_id),
+                REFERENCES portfolios(id)
 );
 
 -- ADMIN
