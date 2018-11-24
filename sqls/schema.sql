@@ -16,11 +16,11 @@ CREATE TABLE stocks (
 CREATE TABLE users (
         id INT NOT NULL UNIQUE auto_increment,
         username VARCHAR(64) NOT NULL UNIQUE,
-        password VARCHAR(64) NOT NULL,
+        password VARCHAR(128) NOT NULL,
         screen_name VARCHAR(64),
         f_name VARCHAR(64) NOT NULL,
         l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
+        bday DATETIME NOT NULL,
         PRIMARY KEY (id)
 );
 

@@ -9,4 +9,7 @@ $app->get('/user/login', \UserController::class . ':login');
 $app->get('/user/register', \UserController::class . ':register');
 
 // POST LOGIN
-$app->post('/user/session_create', \UserController::class . ':session_create');
+$app->post('/user/create_session', \UserController::class . ':createSession');
+
+// POST REGISTER
+$app->post('/user/create_user', \UserController::class . ':createUser');
