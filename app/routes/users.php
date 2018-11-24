@@ -13,3 +13,6 @@ $app->post('/user/create_session', \UserController::class . ':createSession');
 
 // POST REGISTER
 $app->post('/user/create_user', \UserController::class . ':createUser');
+
+// GET USER REGISTRATION
+$app->get('/user/profile', \UserController::class . ':profile');
