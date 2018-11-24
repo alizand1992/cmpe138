@@ -19,15 +19,9 @@ class UserController {
 
     public function createUser($req, $res, $args) {
         $data = $req->getParams();
+
         if ($data["password"] != $data["re_password"]) {
             $data["error"] = "Passwords do not match!";
-            return $this->register($req, $res, $data);
-        }
-
-        $mysqli = new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
-
-        if ($mysqli->connect_errno) {
-            $data["error"] = $mysqli->error;
             return $this->register($req, $res, $data);
         }
 
@@ -36,15 +30,9 @@ class UserController {
             return $this->register($req, $res, $data);
         }
 
-        $password = password_hash($data["password"], PASSWORD_DEFAULT);
-        $f_name = $data["f_name"];
-        $l_name = $data["l_name"];
-        $bday = $data["bday"];
-
-        $query = "INSERT INTO users (username, password, f_name, l_name, bday) " .
-               "VALUES ('$email', '$password', '$f_name', '$l_name', '$bday')";
-
-        $mysqli->query($query);
+        $user = new \app\models\User($data);
+        $user->create();
+        $_SESSION['user_id'] = $user->id;
 
         return $res->withRedirect("profile");
     }

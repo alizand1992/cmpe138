@@ -68,4 +68,14 @@ class User {
             return true;
         }
     }
+
+    public function create() {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $mysqli = self::mysqli();
+        $query = "INSERT INTO users (username, password, f_name, l_name, bday) " .
+               "VALUES ('$this->username', '$this->password', '$this->f_name', '$this->l_name', '$this->bday')";
+
+        $mysqli->query($query);
+        $this->id = $mysqli->insert_id;
+    }
 }
