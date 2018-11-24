@@ -141,7 +141,7 @@ VALUES
 
 -- ENTER TRADER USER
 INSERT INTO users (username, password, f_name, l_name, bday)
-VALUES ('ali.zand@sjsu.edu', '$2y$10$5eWXAJeuyZS7xqRk5knezOifeMcbntsdFnrlvXRnbk5W8o45D7DeG', 'Ali', 'Zand', '1890-01-01 00:00:00');
+VALUES ('ali.zand@sjsu.edu', '$2y$10$jCBxcjlypfEFXSlwY3pXNOuo.LsexCLBxm3co6ILD1tt4hERd9Z1u', 'Ali', 'Zand', '1890-01-01 00:00:00');
 
 -- Portfolio
 INSERT INTO portfolios (funds)
