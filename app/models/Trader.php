@@ -25,4 +25,32 @@ class Trader extends User {
 
         return $this;
     }
+
+    public static function find($id) {
+        $mysqli = self::mysqli();
+        $query = "SELECT * FROM users u " .
+               "LEFT JOIN traders t ON u.id = t.user_id " .
+               "LEFT JOIN portfolios p ON t.port_id = p.id " .
+               "WHERE u.id='$id'";
+        $result = $mysqli->query($query);
+        $mysqli->close();
+
+        $args = $result->fetch_array(MYSQLI_ASSOC);
+        return new Trader($args);
+    }
+
+    public function create() {
+        $id = parent::create();
+        $mysqli = User::mysqli();
+
+        $query = "INSERT INTO portfolios (funds) " .
+               "VALUES (0.0)";
+        $mysqli->query($query);
+
+        $query = "INSERT INTO traders (user_id, port_id) " .
+               "VALUES ($id, $mysqli->insert_id)";
+        $mysqli->query($query);
+
+        $this->portfolios = $mysqli->insert_id;
+    }
 }

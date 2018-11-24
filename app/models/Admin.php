@@ -8,8 +8,8 @@ class Admin extends User {
 
     function __construct(array $args) {
         $args["type"] = "Admin";
-        parent::_construct($args);
-        __set($args["portfolio"]);
+        parent::__construct($args);
+        $this->portfolios = "";
     }
 
     public function __get($property) {
@@ -24,5 +24,17 @@ class Admin extends User {
         }
 
         return $this;
+    }
+
+    public static function find($id) {
+        $mysqli = self::mysqli();
+        $query = "SELECT * FROM users u " .
+               "LEFT JOIN admins a ON u.id = a.user_id " .
+               "WHERE u.id='$id'";
+        $result = $mysqli->query($query);
+        $mysqli->close();
+
+        $args = $result->fetch_array(MYSQLI_ASSOC);
+        return new Admin($args);
     }
 }

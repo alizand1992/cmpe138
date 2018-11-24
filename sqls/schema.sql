@@ -24,6 +24,13 @@ CREATE TABLE users (
         PRIMARY KEY (id)
 );
 
+-- PORTFOLIOS
+CREATE TABLE portfolios (
+        id INT NOT NULL UNIQUE auto_increment,
+        funds DECIMAL(10,4) NOT NULL,
+        PRIMARY KEY (id)
+);
+
 -- TRADER
 CREATE TABLE traders (
         id INT NOT NULL UNIQUE auto_increment,
@@ -31,8 +38,8 @@ CREATE TABLE traders (
         port_id INT NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY (user_id)
-                REFERENCES users(id)
-        FOREIGN KEY (port_id),
+                REFERENCES users(id),
+        FOREIGN KEY (port_id)
                 REFERENCES portfolios(id)
 );
 
@@ -43,16 +50,6 @@ CREATE TABLE admins (
         PRIMARY KEY (id),
         FOREIGN KEY (user_id)
                 REFERENCES users(id)
-);
-
--- PORTFOLIOS
-CREATE TABLE portfolios (
-        id INT NOT NULL UNIQUE auto_increment,
-        funds DECIMAL(10,4) NOT NULL,
-        trader_id INT NOT NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (trader_id)
-                REFERENCES traders(id)
 );
 
 -- PORTFOLIO STOCKS

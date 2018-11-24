@@ -9,14 +9,14 @@ namespace app\Models;
 // bday
 
 class User {
-    protected $id;
-    protected $username;
-    protected $password;
-    protected $screen_name;
-    protected $f_name;
-    protected $l_name;
-    protected $bday;
-    protected $type;
+    public $id;
+    public $username;
+    public $password;
+    public $screen_name;
+    public $f_name;
+    public $l_name;
+    public $bday;
+    public $type;
 
     public function __construct($args) {
         foreach ($args as $value) {
@@ -42,20 +42,6 @@ class User {
         return new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
     }
 
-    public static function find($id) {
-        $mysqli = self::mysqli();
-        $query = "SELECT * FROM users u " .
-               "LEFT JOIN traders t ON u.id = t.user_id " .
-               "LEFT JOIN admins a ON u.id = a.user_id " .
-               "LEFT JOIN portfolios p ON t.port_id = p.id " .
-               "WHERE u.id='$id'";
-        $result = $mysqli->query($query);
-        $mysqli->close();
-
-        $args = $result->fetch_array(MYSQLI_ASSOC);
-        return new User($args);
-    }
-
     public static function exists($username) {
         $mysqli = self::mysqli();
         $query = "SELECT * FROM users WHERE username='$username'";
@@ -69,6 +55,30 @@ class User {
         }
     }
 
+    public static function isTrader($id) {
+        $query = "SELECT COUNT(*) FROM traders WHERE user_id='$id' GROUP BY user_id";
+    }
+
+    public static function isAdmin($id) {
+        $query = "SELECT COUNT(*) FROM admins WHERE user_id='$id' GROUP BY user_id";
+    }
+
+    private static function getCount($query) {
+        $mysqli = self::mysqli();
+        return $mysqli->query($query)->num_rows != 0;
+    }
+
+    public static function find($id) {
+        $mysqli = self::mysqli();
+        $query = "SELECT * FROM users u " .
+               "WHERE u.id='$id'";
+        $result = $mysqli->query($query);
+        $mysqli->close();
+
+        $args = $result->fetch_array(MYSQLI_ASSOC);
+        return new User($args);
+    }
+
     public function create() {
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         $mysqli = self::mysqli();
@@ -77,5 +87,6 @@ class User {
 
         $mysqli->query($query);
         $this->id = $mysqli->insert_id;
+        return $this->id;
     }
 }

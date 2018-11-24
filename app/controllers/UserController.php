@@ -1,6 +1,12 @@
 <?php
 namespace app\Controllers;
 
+use \app\models\User as User;
+use \app\models\Trader as Trader;
+use \app\models\Admin as Admin;
+
+
+
 class UserController {
     protected $view;
     protected $db;
@@ -25,12 +31,12 @@ class UserController {
             return $this->register($req, $res, $data);
         }
 
-        if (\app\models\User::exists($data['username'])) {
+        if (User::exists($data['username'])) {
              $data["error"] = "The email is already registered.";
             return $this->register($req, $res, $data);
         }
 
-        $user = new \app\models\User($data);
+        $user = new Trader($data);
         $user->create();
         $_SESSION['user_id'] = $user->id;
 
@@ -50,7 +56,7 @@ class UserController {
         }
 
         $result = $mysqli->query($query);
-        var_dump($result);
+
         if ($result->num_rows == 0) {
             $mysqli->close();
             $data["error"] = "Incorrect username or password.";
@@ -63,9 +69,15 @@ class UserController {
     }
 
     public function profile($req, $res, $args) {
-        $user = \app\models\User::find($_SESSION["user_id"]);
+        $user = null;
+        if (User::isTrader($_SESSION["user_id"])) {
+            $user = Trader::find($_SESSION["user_id"]);
+        } else {
+            $user = Admin::find($_SESSION["user_id"]);
+        }
 
-        var_dump($user);
+        // var_dump((array)$user);
+        // var_dump($_SESSION["user_id"]);
         return $this->view->render($res, 'user/profile.html', (array)$user);
     }
 }
