@@ -12,66 +12,113 @@ CREATE TABLE stocks (
        PRIMARY KEY (id)
 );
 
+-- USERS
+CREATE TABLE users (
+        id INT NOT NULL UNIQUE auto_increment,
+        username VARCHAR(64) NOT NULL UNIQUE,
+        password VARCHAR(128) NOT NULL,
+        screen_name VARCHAR(64),
+        f_name VARCHAR(64) NOT NULL,
+        l_name VARCHAR(64) NOT NULL,
+        bday DATETIME NOT NULL,
+        PRIMARY KEY (id)
+);
+
+-- TRADER
+CREATE TABLE traders (
+        id INT NOT NULL UNIQUE auto_increment,
+        user_id INT NOT NULL,
+        port_id INT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (user_id)
+                REFERENCES users(id)
+);
+
+-- ADMIN
+CREATE TABLE admins (
+        id INT NOT NULL UNIQUE auto_increment,
+        user_id INT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (user_id)
+                REFERENCES users(id)
+);
+
+-- PORTFOLIOS
+CREATE TABLE portfolios (
+        id INT NOT NULL UNIQUE auto_increment,
+        funds DECIMAL(10,4) NOT NULL,
+        trader_id INT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (trader_id)
+                REFERENCES traders(id)
+);
+
+-- PORTFOLIO STOCKS
+CREATE TABLE portfolio_stocks (
+       id INT NOT NULL UNIQUE auto_increment,
+       stock_id INT NOT NULL,
+       port_id INT NOT NULL,
+       PRIMARY KEY (id),
+       FOREIGN KEY (stock_id)
+               REFERENCES stocks(id),
+       FOREIGN KEY (port_id)
+               REFERENCES portfolios(id)
+);
+
+-- STOCK TO SELL
+CREATE TABLE stocks_to_sell (
+       id INT NOT NULL UNIQUE auto_increment,
+       stock_id INT NOT NULL,
+       port_id INT NOT NULL,
+       PRIMARY KEY (id),
+       FOREIGN KEY (stock_id)
+               REFERENCES stocks(id),
+       FOREIGN KEY (port_id)
+               REFERENCES portfolios(id)
+);
+
+-- STOCK TO BUY
+CREATE TABLE stocks_to_buy (
+       id INT NOT NULL UNIQUE auto_increment,
+       stock_id INT NOT NULL,
+       port_id INT NOT NULL,
+       PRIMARY KEY (id),
+       FOREIGN KEY (stock_id)
+               REFERENCES stocks(id),
+       FOREIGN KEY (port_id)
+               REFERENCES portfolios(id)
+);
 
 -- TRANSACTION
 CREATE TABLE transactions (
        id INT NOT NULL UNIQUE auto_increment,
        stock_id INT NOT NULL,
+       port_id INT NOT NULL,
        num_stock INT NOT NULL,
        price DECIMAL(10,4) NOT NULL,
        FOREIGN KEY (stock_id)
-               REFERENCES stocks(id)
+               REFERENCES stocks(id),
+       FOREIGN KEY (port_id)
+               REFERENCES portfolios(id)
 );
 
--- BANK ACCOUNT
-CREATE TABLE bank_acct (
+-- BANK ACCOUNTS
+CREATE TABLE bank_accounts (
         id INT NOT NULL UNIQUE auto_increment,
-        account_no INT NOT NULL,
+        account_no INT NOT NULL UNIQUE,
         routing_no INT NOT NULL,
-        FOREIGN KEY (account_no)
-                REFERENCES user(id)
+        port_id INT NOT NULL,
+        FOREIGN KEY (port_id)
+                REFERENCES portfolios(id)
 );
 
--- PORTFOLIO
-CREATE TABLE portfolio (
-        id INT NOT NULL UNIQUE auto_increment,
-        funds INT NOT NULL,
-);
-
--- USER
-CREATE TABLE user (
-        id INT NOT NULL UNIQUE auto_increment,
-        u_id INT NOT NULL,
-        user_name VARCHAR(64) NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        f_name VARCHAR(64) NOT NULL,
-        l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
-        PRIMARY KEY (id)
-);
-
--- TRADER
-CREATE TABLE trader (
-        id INT NOT NULL UNIQUE auto_increment,
-        trade_id INT NOT NULL,
-        trade_user_name VARCHAR(64) NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        f_name VARCHAR(64) NOT NULL,
-        l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
-        FOREIGN KEY (trade_id)
-                REFERENCES user(id)
-);
-
--- ADMIN
-CREATE TABLE administrator (
+-- ADMIN PORTFOLIOS
+CREATE TABLE admin_portfolios (
         id INT NOT NULL UNIQUE auto_increment,
         admin_id INT NOT NULL,
-        admin_user_name VARCHAR(64) NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        f_name VARCHAR(64) NOT NULL,
-        l_name VARCHAR(64) NOT NULL,
-        bday VARCHAR(64) NOT NULL,
+        port_id INT NOT NULL,
         FOREIGN KEY (admin_id)
-                REFERENCES user(id)
+                REFERENCES admins(id),
+        FOREIGN KEY (port_id)
+                REFERENCES portfolios(id)
 );
