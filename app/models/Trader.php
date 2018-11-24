@@ -1,7 +1,9 @@
 <?php
 namespace app\Models;
 
+require_once("Mysqli.php");
 require_once("User.php");
+require_once("Portfolio.php");
 
 class Trader extends User {
     private $portfolio;
@@ -9,7 +11,7 @@ class Trader extends User {
     public function __construct($args) {
         $args["type"] = "Trader";
         parent::__construct($args);
-        $this->portfolio = $args["portfolio"];
+        $this->portfolio = new \app\Models\Portfolio($args["port_id"]);
     }
 
     public function __get($property) {
@@ -27,7 +29,7 @@ class Trader extends User {
     }
 
     public static function find($id) {
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         $query = "SELECT * FROM users u " .
                "LEFT JOIN traders t ON u.id = t.user_id " .
                "LEFT JOIN portfolios p ON t.port_id = p.id " .
@@ -36,12 +38,13 @@ class Trader extends User {
         $mysqli->close();
 
         $args = $result->fetch_array(MYSQLI_ASSOC);
+        // var_dump($args);
         return new Trader($args);
     }
 
     public function create() {
         $id = parent::create();
-        $mysqli = User::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
 
         $query = "INSERT INTO portfolios (funds) " .
                "VALUES (0.0)";

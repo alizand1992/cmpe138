@@ -1,12 +1,13 @@
 <?php
 namespace app\Models;
 
+require_once("Mysqli.php");
 require_once("User.php");
 
 class Admin extends User {
     private $portfolios;
 
-    function __construct(array $args) {
+    function __construct($args) {
         $args["type"] = "Admin";
         parent::__construct($args);
         $this->portfolios = "";
@@ -27,7 +28,7 @@ class Admin extends User {
     }
 
     public static function find($id) {
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         $query = "SELECT * FROM users u " .
                "LEFT JOIN admins a ON u.id = a.user_id " .
                "WHERE u.id='$id'";

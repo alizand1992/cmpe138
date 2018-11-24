@@ -37,5 +37,13 @@
         {{ type }}
       </div>
     </div>
+    <div class="row">
+      <div class="col-4">
+        Funds:
+      </div>
+      <div class="col-8">
+        ${{ portfolio.funds|number_format(2, '.', ',') }}
+      </div>
+    </div>
   </div>
 </div>

@@ -3,6 +3,29 @@
     <h4>Portfolio</h4>
   </div>
   <div class="card-body">
-
+    {% if portfolio.stocks %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Label</th>
+          <th scope="col">Company name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stock in portfolio.stocks %}
+          <tr>
+            <td>{{ stock.label }}</td>
+            <td>{{ stock.company_name }}</td>
+            <td>${{ stock.price|number_format(2, '.', ',') }}</td>
+            <td>{{ stock.quantity }}</td>
+            <td>${{ (stock.price * stock.quantity)|number_format(2, '.', ',') }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
   </div>
 </div>

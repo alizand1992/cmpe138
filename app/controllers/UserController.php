@@ -76,8 +76,10 @@ class UserController {
             $user = Admin::find($_SESSION["user_id"]);
         }
 
-        // var_dump((array)$user);
-        // var_dump($_SESSION["user_id"]);
-        return $this->view->render($res, 'user/profile.html', (array)$user);
+        $user_arr = (array)$user;
+        $user_arr["portfolio"] = (array)$user_arr["\0app\\Models\\Trader\0portfolio"];
+        unset($user_arr["app\\Models\\Trader\0portfolio"]);
+
+        return $this->view->render($res, 'user/profile.html', $user_arr);
     }
 }

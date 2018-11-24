@@ -8,6 +8,8 @@ namespace app\Models;
 // l_name
 // bday
 
+require_once("Mysqli.php");
+
 class User {
     public $id;
     public $username;
@@ -38,12 +40,8 @@ class User {
         return $this;
     }
 
-    public static function mysqli() {
-        return new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
-    }
-
     public static function exists($username) {
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         $query = "SELECT * FROM users WHERE username='$username'";
         $result = $mysqli->query($query);
         $mysqli->close();
@@ -57,19 +55,21 @@ class User {
 
     public static function isTrader($id) {
         $query = "SELECT COUNT(*) FROM traders WHERE user_id='$id' GROUP BY user_id";
+        return self::getCount($query);
     }
 
     public static function isAdmin($id) {
         $query = "SELECT COUNT(*) FROM admins WHERE user_id='$id' GROUP BY user_id";
+        return self::getCount($query);
     }
 
     private static function getCount($query) {
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         return $mysqli->query($query)->num_rows != 0;
     }
 
     public static function find($id) {
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         $query = "SELECT * FROM users u " .
                "WHERE u.id='$id'";
         $result = $mysqli->query($query);
@@ -81,7 +81,7 @@ class User {
 
     public function create() {
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $mysqli = self::mysqli();
+        $mysqli = \app\Models\Mysqli::mysqli();
         $query = "INSERT INTO users (username, password, f_name, l_name, bday) " .
                "VALUES ('$this->username', '$this->password', '$this->f_name', '$this->l_name', '$this->bday')";
 
