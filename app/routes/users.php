@@ -14,5 +14,11 @@ $app->post('/user/create_session', \UserController::class . ':createSession');
 // POST REGISTER
 $app->post('/user/create_user', \UserController::class . ':createUser');
 
-// GET USER REGISTRATION
+// GET USER PROFILE
 $app->get('/user/profile', \UserController::class . ':profile');
+
+// GET USER PROFILE EDIT
+$app->get('/user/profile/edit', \UserController::class . ':edit');
+
+// POST REGISTER
+$app->post('/user/profile/update', \UserController::class . ':update');

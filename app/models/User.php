@@ -40,6 +40,49 @@ class User {
         return $this;
     }
 
+    public function save() {
+        if ($this->username == null || $this->screen_name == null ||
+            $this->f_name == null || $this->l_name == null || $this->bday == null) {
+            return false;
+        }
+
+        $mysqli = Mysqli::mysqli();
+        $query = "SELECT username FROM users where username='$this->username' and id <> '$this->id'";
+        $username_taken = $mysqli->query($query)->num_rows != 0;
+
+        if ($username_taken) {
+            $mysqli->close();
+            return false;
+        }
+
+        $query = "UPDATE users set " .
+               "username = '$this->username', " .
+               "screen_name = '$this->screen_name', " .
+               "f_name = '$this->f_name', " .
+               "l_name = '$this->l_name', " .
+               "bday = '$this->bday' " .
+               "WHERE id = '$this->id'";
+        $mysqli->query($query);
+        $mysqli->close();
+
+        if ($mysqli->errno) {
+            return false;
+        }
+        return true;
+    }
+
+    public function create() {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $mysqli = \app\Models\Mysqli::mysqli();
+        $query = "INSERT INTO users (username, password, f_name, l_name, bday) " .
+               "VALUES ('$this->username', '$this->password', '$this->f_name', '$this->l_name', '$this->bday')";
+
+        $mysqli->query($query);
+        $this->id = $mysqli->insert_id;
+        return $this->id;
+    }
+
+    // Statics
     public static function exists($username) {
         $mysqli = \app\Models\Mysqli::mysqli();
         $query = "SELECT * FROM users WHERE username='$username'";
@@ -77,16 +120,5 @@ class User {
 
         $args = $result->fetch_array(MYSQLI_ASSOC);
         return new User($args);
-    }
-
-    public function create() {
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $mysqli = \app\Models\Mysqli::mysqli();
-        $query = "INSERT INTO users (username, password, f_name, l_name, bday) " .
-               "VALUES ('$this->username', '$this->password', '$this->f_name', '$this->l_name', '$this->bday')";
-
-        $mysqli->query($query);
-        $this->id = $mysqli->insert_id;
-        return $this->id;
     }
 }

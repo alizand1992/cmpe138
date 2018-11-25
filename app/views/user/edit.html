@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  {% if error %}
+    <div class="row">
+      <div class="col-8 offset-2">
+        <div class="alert alert-danger">
+          {{error}}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if success %}
+    <div class="row">
+      <div class="col-8 offset-2">
+        <div class="alert alert-success">
+          {{success}}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <form action="/user/profile/update" method="post">
+    <div class="row">
+      <div class="col-2 offset-2">
+        <label for="f_name" class="col-form-label">
+          E-Mail:
+        </label>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <input type="email" class="form-control" name="username" id="username" value="{{username}}" placeholder="E-Mail" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 offset-2">
+        <label for="f_name" class="col-form-label">
+          Name:
+        </label>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <input type="text" class="form-control" name="f_name" id="f_name" value="{{f_name}}" placeholder="First Name" />
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <input type="text" class="form-control" name="l_name" id="l_name" value="{{l_name}}" placeholder="Last Name" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 offset-2">
+        <label for="bday" class="col-form-label">
+          Screen Name:
+        </label>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <input type="text" class="form-control" name="screen_name" id="screen_name" value="{{screen_name}}" placeholder="Screen Name" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 offset-2">
+        <label for="bday" class="col-form-label">
+          Birthday:
+        </label>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <input type="date" class="form-control" name="bday" id="bday" value="{{bday|slice(0,10)}}" placeholder="Birthday" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 offset-2">
+        <label for="bday" class="col-form-label">
+          Type:
+        </label>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          {{type}}
+          <small class="form-text text-muted">
+            Only an admin can change this field.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10 text-right">
+        <a href="/user/profile" class="btn btn-danger">Back</a>
+        <button class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
