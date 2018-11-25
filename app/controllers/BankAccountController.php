@@ -22,11 +22,21 @@ class BankAccountController {
     }
 
     public function edit($req, $res, $args) {
-        return $this->view->render($res, 'bankAccount/edit.html', $args);
+        $data["account"] = BankAccount::find($args["id"]);
+        return $this->view->render($res, 'bankAccount/edit.html', $data);
     }
 
     public function update($req, $res, $args) {
+        $data = $req->getParams();
+        $account = new BankAccount($data);
+        $data["account"] = $account->save();
 
-        // return $this->view->render($res, 'bankAccount/edit.html', $args);
+        if ($data["account"] != false) {
+            $data["success"] = "Your changes have been made!";
+        } else {
+            $data["error"] = "There was an error saving the changes!";
+        }
+
+        return $this->view->render($res, 'bankAccount/edit.html', $data);
     }
 }

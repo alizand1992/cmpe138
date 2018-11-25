@@ -8,6 +8,6 @@ $app->get('/bank_account/new', \BankAccountController::class . ':new');
 
 $app->get('/bank_account/edit/{id}', \BankAccountController::class . ':edit');
 
-$app->patch('/bank_account/update', \BankAccountController::class . ':update');
+$app->post('/bank_account/update', \BankAccountController::class . ':update');
 
 $app->delete('/bank_account/delete/{id}', \BankAccountController::class . ':delete');
