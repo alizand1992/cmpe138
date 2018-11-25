@@ -9,6 +9,6 @@ class StockController {
     }
 
     public function toBuy($req, $res, $args) {
-
+        return $this->view->render($res, 'stock/to_buy.html', $args);
     }
 }
