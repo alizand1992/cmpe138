@@ -46,8 +46,6 @@ class UserController {
     public function createSession($req, $res, $args) {
         $data = $req->getParams();
         $username = $data["username"];
-        $password = password_hash(trim($data["password"]), PASSWORD_DEFAULT);
-
         $query = "SELECT * FROM users WHERE username='$username'";
         $mysqli = new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
 
@@ -56,14 +54,15 @@ class UserController {
         }
 
         $result = $mysqli->query($query);
+        $row = $result->fetch_array(MYSQLI_ASSOC);
 
-        if ($result->num_rows == 0) {
+        if ($result->num_rows == 0 || !password_verify(trim($data["password"]), $row["password"])) {
             $mysqli->close();
             $data["error"] = "Incorrect username or password.";
             return $this->login($req, $res, $data);
         }
 
-        $_SESSION["user_id"] = $result->fetch_array(MYSQLI_ASSOC)["id"];
+        $_SESSION["user_id"] = $row["id"];
         $mysqli->close();
         return $res->withRedirect("profile");
     }
