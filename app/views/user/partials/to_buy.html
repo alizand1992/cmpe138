@@ -3,6 +3,19 @@
     <h4>To Buy</h4>
   </div>
   <div class="card-body">
-
+    {% if stocks is empty %}
+      <div class="alert alert-warning" role="alert">
+        There are no Stocks to be purchased.
+      </div>
+    {% endif %}
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-12 text-right">
+        <a href="#" class="btn btn-primary">
+          Buy
+        </a>
+      </div>
+    </div>
   </div>
 </div>
