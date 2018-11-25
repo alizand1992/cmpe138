@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  {% include 'bankAccount/partials/errors.html' %}
+  <div class="row">
+    <div class="col-6 offset-3">
+      <div class="card">
+        <div class="card-header">
+          Edit Bank Account
+        </div>
+        <div class="card-body">
+          {% set vars = { 'action': 'update', 'submit': 'Submit' } %}
+          {% include 'bankAccount/partials/bank_fields.html' with vars %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

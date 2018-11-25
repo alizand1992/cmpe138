@@ -37,9 +37,14 @@ $container[UserController::class] = function($c) {
     return new app\controllers\UserController($view);
 };
 
+$container[BankAccountController::class] = function($c) {
+    $view = $c->get("view");
+    return new app\controllers\BankAccountController($view);
+};
 
 //Define app routes
 include "../app/routes/users.php";
+include "../app/routes/bank_accounts.php";
 
 $app->get("/", function (Request $request, Response $response, array $args) {
     echo phpinfo();
