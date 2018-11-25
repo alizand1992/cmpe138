@@ -162,3 +162,7 @@ VALUES
     ('2', '1', '20', '10'),
     ('3', '1', '140', '15'),
     ('4', '1', '700.50', '100');
+
+-- Stocks to buy mock
+INSERT INTO stocks_to_sell (stock_id, port_id, price, quantity)
+VALUES (2,1,22,5);
