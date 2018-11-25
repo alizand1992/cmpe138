@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-8 offset-2">
+      <div class="card">
+        <div class="card-header">
+          <h3>Bank Accounts</h3>
+        </div>
+        <div class="card-body">
+          {% if accounts %}
+            <table class="table tabke-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Account Number</th>
+                  <th scope="col">Routing Number</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for account in accounts %}
+                  <tr>
+                    <td>{{ account.account_no }}</td>
+                    <td>{{ account.routing_no }}</td>
+                    <td class="text-right">
+                      <a href="bank_account/edit/{{account.id}}" class="btn btn-primary">
+                        Edit
+                      </a>
+                      <a href="bank_account/delete/{{account.id}}" class="btn btn-danger">
+                        X
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-8 offset-2 text-right">
+      <a href="bank_account/new" class="btn btn-primary">
+        + Add Account
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
