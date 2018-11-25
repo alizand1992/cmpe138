@@ -1,0 +1,41 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Portfolio</h4>
+  </div>
+  <div class="card-body">
+    {% if portfolio.stocks %}
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Label</th>
+          <th scope="col">Company name</th>
+          <th class="text-right" scope="col">Price</th>
+          <th class="text-right" scope="col">Quantity</th>
+          <th class="text-right" scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set total = 0 %}
+        {% for stock in portfolio.stocks %}
+        {% set total = total + (stock.price * stock.quantity) %}
+          <tr class="clickable">
+            <td>{{ stock.label }}</td>
+            <td>{{ stock.company_name }}</td>
+            <td class="text-right">${{ stock.price|number_format(2, '.', ',') }}</td>
+            <td class="text-right">{{ stock.quantity }}</td>
+            <td class="text-right">${{ (stock.price * stock.quantity)|number_format(2, '.', ',') }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="4">
+            <b>Total</b>
+          </td>
+          <td class="text-right">
+            ${{ total|number_format(2, '.', ',') }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+</div>

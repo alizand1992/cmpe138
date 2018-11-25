@@ -449,4 +449,5 @@ return array(
     'Twig_TokenStream' => $vendorDir . '/twig/twig/lib/Twig/TokenStream.php',
     'Twig_Util_DeprecationCollector' => $vendorDir . '/twig/twig/lib/Twig/Util/DeprecationCollector.php',
     'Twig_Util_TemplateDirIterator' => $vendorDir . '/twig/twig/lib/Twig/Util/TemplateDirIterator.php',
+    'app\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
 );

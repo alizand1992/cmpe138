@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      {% include 'user/partials/information.html' %}
+      <br />
+      {% if bank_accounts %}
+        {% include 'user/partials/bank_account.html' %}
+      {% endif %}
+    </div>
+    <div class="col-8">
+      {% include 'user/partials/portfolio.html' %}
+      <br />
+      {% if to_sell %}
+        {% include 'user/partials/to_sell.html' %}
+      {% endif %}
+      <br />
+      {% if to_buy %}
+        {% include 'user/partials/to_buy.html' %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

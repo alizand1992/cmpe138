@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Information</h4>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        Name:
+      </div>
+      <div class="col-8">
+        {{ f_name }} {{ l_name }}
+      </div>
+    </div>
+    {% if screen_name %}
+    <div class="row">
+      <div class="col-4">
+        Screen Name:
+      </div>
+      <div class="col-8">
+        {{ screen_name }}
+      </div>
+    </div>
+    {% endif %}
+    <div class="row">
+      <div class="col-4">
+        Birth day:
+      </div>
+      <div class="col-8">
+        {{ bday|date("m/d/Y") }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        Type:
+      </div>
+      <div class="col-8">
+        {{ type }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        Funds:
+      </div>
+      <div class="col-8">
+        ${{ portfolio.funds|number_format(2, '.', ',') }}
+      </div>
+    </div>
+  </div>
+</div>

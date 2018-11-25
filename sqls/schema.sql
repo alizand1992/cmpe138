@@ -4,7 +4,7 @@ CREATE DATABASE stock_exchange;
 
 USE stock_exchange
 
--- STOCK
+-- STOCKS
 CREATE TABLE stocks (
        id INT NOT NULL UNIQUE auto_increment,
        label VARCHAR(5) NOT NULL UNIQUE,
@@ -24,6 +24,13 @@ CREATE TABLE users (
         PRIMARY KEY (id)
 );
 
+-- PORTFOLIOS
+CREATE TABLE portfolios (
+        id INT NOT NULL UNIQUE auto_increment,
+        funds DECIMAL(10,4) NOT NULL,
+        PRIMARY KEY (id)
+);
+
 -- TRADER
 CREATE TABLE traders (
         id INT NOT NULL UNIQUE auto_increment,
@@ -31,7 +38,9 @@ CREATE TABLE traders (
         port_id INT NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY (user_id)
-                REFERENCES users(id)
+                REFERENCES users(id),
+        FOREIGN KEY (port_id)
+                REFERENCES portfolios(id)
 );
 
 -- ADMIN
@@ -43,21 +52,13 @@ CREATE TABLE admins (
                 REFERENCES users(id)
 );
 
--- PORTFOLIOS
-CREATE TABLE portfolios (
-        id INT NOT NULL UNIQUE auto_increment,
-        funds DECIMAL(10,4) NOT NULL,
-        trader_id INT NOT NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (trader_id)
-                REFERENCES traders(id)
-);
-
 -- PORTFOLIO STOCKS
 CREATE TABLE portfolio_stocks (
        id INT NOT NULL UNIQUE auto_increment,
        stock_id INT NOT NULL,
        port_id INT NOT NULL,
+       price DECIMAL(10,4) DEFAULT 0.0,
+       quantity INT NOT NULL DEFAULT 1,
        PRIMARY KEY (id),
        FOREIGN KEY (stock_id)
                REFERENCES stocks(id),
@@ -122,3 +123,38 @@ CREATE TABLE admin_portfolios (
         FOREIGN KEY (port_id)
                 REFERENCES portfolios(id)
 );
+
+
+-- INSERT FAKE STOCK
+INSERT INTO stocks (label, company_name)
+VALUES
+    ('AMD', 'Advance Micro Devices'),
+    ('INTL', 'Intel'),
+    ('AAPL', 'Apple'),
+    ('BAC', 'Bank of America'),
+    ('MSFT', 'Microsoft'),
+    ('F', 'Ford'),
+    ('T', 'At&T'),
+    ('FB', 'Facebook'),
+    ('GE', 'General Electric');
+
+
+-- ENTER TRADER USER
+INSERT INTO users (username, password, f_name, l_name, bday)
+VALUES ('ali.zand@sjsu.edu', '$2y$10$jCBxcjlypfEFXSlwY3pXNOuo.LsexCLBxm3co6ILD1tt4hERd9Z1u', 'Ali', 'Zand', '1890-01-01 00:00:00');
+
+-- Portfolio
+INSERT INTO portfolios (funds)
+VALUES ('1000.00');
+
+-- TRADER
+INSERT INTO traders (user_id, port_id)
+VALUES (1, 1);
+
+-- portfolio stocks
+INSERT INTO portfolio_stocks (stock_id, port_id, price, quantity)
+VALUES
+    ('1', '1', '100', '1'),
+    ('2', '1', '20', '10'),
+    ('3', '1', '140', '15'),
+    ('4', '1', '700.50', '100');

@@ -547,6 +547,7 @@ class ComposerStaticInit66e24dd98ae9b529b1165e2f3475f638
         'Twig_TokenStream' => __DIR__ . '/..' . '/twig/twig/lib/Twig/TokenStream.php',
         'Twig_Util_DeprecationCollector' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Util/DeprecationCollector.php',
         'Twig_Util_TemplateDirIterator' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Util/TemplateDirIterator.php',
+        'app\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
