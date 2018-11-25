@@ -2,50 +2,16 @@
 
 {% block content %}
 <div class="container">
-  {% if error %}
-    <div class="row">
-      <div class="col-6 offset-3">
-        <div class="alert alert-error" role="alert">
-          {{ error }}
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    {% if success %}
-    <div class="row">
-      <div class="col-6 offset-3">
-        <div class="alert alert-success" role="alert">
-          {{ success }}
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    <div class="row">
+  {% include 'bankAccount/partials/errors.html' %}
+  <div class="row">
     <div class="col-6 offset-3">
       <div class="card">
         <div class="card-header">
           Edit Bank Account
         </div>
         <div class="card-body">
-          <form action="/bank_account/update" method="post">
-            <input type="hidden" name="id" value="{{account.id}}" />
-            <div class="form-group">
-              <label for="account_no">Account Number:</label>
-              <input type="text" name="account_no" id="account_no" class="form-control" placeholder="Account Number:" value="{{account.account_no}}" />
-            </div>
-            <div class="form-group">
-              <label for="routing_no">Routing Number:</label>
-              <input type="text" name="routing_no" id="routing_no" class="form-control" placeholder="Routing Number:" value="{{account.routing_no}}" />
-            </div>
-            <div class="form-group text-right">
-              <a href="/bank_accounts" class="btn btn-danger">
-                Back
-              </a>
-              <button class="btn btn-primary">
-                Submit
-              </button>
-            </div>
-          </form>
+          {% set vars = { 'action': 'update', 'submit': 'Submit' } %}
+          {% include 'bankAccount/partials/bank_fields.html' with vars %}
         </div>
       </div>
     </div>

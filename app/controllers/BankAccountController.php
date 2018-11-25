@@ -31,6 +31,18 @@ class BankAccountController {
         $account = new BankAccount($data);
         $data["account"] = $account->save();
 
+        $this::redirect_to_edit($req, $res, $data);
+    }
+
+    public function create($req, $res, $args) {
+        $data = $req->getParams();
+        $account = new BankAccount($data);
+        $data["account"] = $account->create();
+
+        $this::redirect_to_edit($req, $res, $data);
+    }
+
+    private function redirect_to_edit($req, $res, $data) {
         if ($data["account"] != false) {
             $data["success"] = "Your changes have been made!";
         } else {

@@ -44,6 +44,23 @@ class BankAccount {
         return false;
     }
 
+    public function create() {
+        $user_id = $_SESSION["user_id"];
+        $query = "SELECT port_id FROM traders WHERE user_id='$user_id'";
+        $mysqli = Mysqli::mysqli();
+        $result = $mysqli->query($query);
+        $this->port_id = $result->fetch_array(MYSQLI_ASSOC)['port_id'];
+
+        if ($this->account_no != null && $this->routing_no != null && $this->port_id != null) {
+            $query = "INSERT INTO bank_accounts (account_no, routing_no, port_id) " .
+                   "VALUES ($this->account_no, $this->routing_no, $this->port_id)";
+            $mysqli->query($query);
+            return $this;
+        }
+
+        return false;
+    }
+
     // Statics
     public static function findUserAccounts($user_id) {
         $query = "SELECT * FROM bank_accounts " .

@@ -11,3 +11,5 @@ $app->get('/bank_account/edit/{id}', \BankAccountController::class . ':edit');
 $app->post('/bank_account/update', \BankAccountController::class . ':update');
 
 $app->delete('/bank_account/delete/{id}', \BankAccountController::class . ':delete');
+
+$app->post('/bank_account/create', \BankAccountController::class . ':create');

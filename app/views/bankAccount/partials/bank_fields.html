@@ -1,0 +1,19 @@
+<form action="/bank_account/{{action}}" method="post">
+  <input type="hidden" name="id" value="{{account.id}}" />
+  <div class="form-group">
+    <label for="account_no">Account Number:</label>
+    <input type="text" name="account_no" id="account_no" class="form-control" placeholder="Account Number:" value="{{account.account_no}}" />
+  </div>
+  <div class="form-group">
+    <label for="routing_no">Routing Number:</label>
+    <input type="text" name="routing_no" id="routing_no" class="form-control" placeholder="Routing Number:" value="{{account.routing_no}}" />
+  </div>
+  <div class="form-group text-right">
+    <a href="/bank_accounts" class="btn btn-danger">
+      Back
+    </a>
+    <button class="btn btn-primary">
+      {{ submit }}
+    </button>
+  </div>
+</form>
