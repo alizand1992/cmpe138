@@ -65,17 +65,40 @@ class UserController {
     }
 
     public function profile($req, $res, $args) {
+        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+
+        return $this->view->render($res, 'user/profile.html', $user_arr);
+    }
+
+    public function edit($req, $res, $args) {
+        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+
+        return $this->view->render($res, 'user/edit.html', $user_arr);
+    }
+
+    public function update($req, $res, $args) {
+        $data = $req->getParams();
+        $data["id"] = $_SESSION["user_id"];
+        $user = new User($data);
+
+        if ($user->save()) {
+            $data["success"] = "The user was saved successfully";
+        } else {
+            $data["error"] = "There was an error making your changes!";
+        }
+        return $this->view->render($res, 'user/edit.html', $data);
+    }
+
+    private function getUserArray($id) {
         $user = null;
         if (User::isTrader($_SESSION["user_id"])) {
             $user = Trader::find($_SESSION["user_id"]);
         } else {
             $user = Admin::find($_SESSION["user_id"]);
         }
-
         $user_arr = (array)$user;
         $user_arr["portfolio"] = (array)$user_arr["\0app\\Models\\Trader\0portfolio"];
         unset($user_arr["app\\Models\\Trader\0portfolio"]);
-
-        return $this->view->render($res, 'user/profile.html', $user_arr);
+        return $user_arr;
     }
 }
