@@ -449,5 +449,12 @@ return array(
     'Twig_TokenStream' => $vendorDir . '/twig/twig/lib/Twig/TokenStream.php',
     'Twig_Util_DeprecationCollector' => $vendorDir . '/twig/twig/lib/Twig/Util/DeprecationCollector.php',
     'Twig_Util_TemplateDirIterator' => $vendorDir . '/twig/twig/lib/Twig/Util/TemplateDirIterator.php',
+    'app\\Controllers\\BankAccountController' => $baseDir . '/app/controllers/BankAccountController.php',
     'app\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
+    'app\\Models\\Admin' => $baseDir . '/app/models/Admin.php',
+    'app\\Models\\Mysqli' => $baseDir . '/app/models/Mysqli.php',
+    'app\\Models\\Portfolio' => $baseDir . '/app/models/Portfolio.php',
+    'app\\Models\\Stock' => $baseDir . '/app/models/Stock.php',
+    'app\\Models\\Trader' => $baseDir . '/app/models/Trader.php',
+    'app\\Models\\User' => $baseDir . '/app/models/User.php',
 );

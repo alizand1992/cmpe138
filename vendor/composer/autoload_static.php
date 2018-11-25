@@ -547,7 +547,14 @@ class ComposerStaticInit66e24dd98ae9b529b1165e2f3475f638
         'Twig_TokenStream' => __DIR__ . '/..' . '/twig/twig/lib/Twig/TokenStream.php',
         'Twig_Util_DeprecationCollector' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Util/DeprecationCollector.php',
         'Twig_Util_TemplateDirIterator' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Util/TemplateDirIterator.php',
+        'app\\Controllers\\BankAccountController' => __DIR__ . '/../..' . '/app/controllers/BankAccountController.php',
         'app\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
+        'app\\Models\\Admin' => __DIR__ . '/../..' . '/app/models/Admin.php',
+        'app\\Models\\Mysqli' => __DIR__ . '/../..' . '/app/models/Mysqli.php',
+        'app\\Models\\Portfolio' => __DIR__ . '/../..' . '/app/models/Portfolio.php',
+        'app\\Models\\Stock' => __DIR__ . '/../..' . '/app/models/Stock.php',
+        'app\\Models\\Trader' => __DIR__ . '/../..' . '/app/models/Trader.php',
+        'app\\Models\\User' => __DIR__ . '/../..' . '/app/models/User.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -5,11 +5,8 @@ use \app\models\User as User;
 use \app\models\Trader as Trader;
 use \app\models\Admin as Admin;
 
-
-
 class UserController {
     protected $view;
-    protected $db;
 
     public function __construct(\Slim\Views\Twig $view) {
         $this->view = $view;
