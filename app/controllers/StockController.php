@@ -15,4 +15,8 @@ class StockController {
 
         return $this->view->render($res, 'stock/to_buy.html', $data);
     }
+
+    public function buy($req, $res, $args) {
+        var_dump($req->getParams());
+    }
 }
