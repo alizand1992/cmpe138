@@ -71,6 +71,8 @@ CREATE TABLE stocks_to_sell (
        id INT NOT NULL UNIQUE auto_increment,
        stock_id INT NOT NULL,
        port_id INT NOT NULL,
+       quantity INT DEFAULT 1,
+       price DECIMAL(10, 4) NOT NULL,
        PRIMARY KEY (id),
        FOREIGN KEY (stock_id)
                REFERENCES stocks(id),
@@ -83,6 +85,8 @@ CREATE TABLE stocks_to_buy (
        id INT NOT NULL UNIQUE auto_increment,
        stock_id INT NOT NULL,
        port_id INT NOT NULL,
+       quantity INT DEFAULT 1,
+       price DECIMAL(10, 4) NOT NULL,
        PRIMARY KEY (id),
        FOREIGN KEY (stock_id)
                REFERENCES stocks(id),
