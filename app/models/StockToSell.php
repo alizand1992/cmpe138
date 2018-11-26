@@ -7,9 +7,6 @@ require_once("Stock.php");
 class StockToSell extends Stock {
     public $id;
     public $port_id;
-    public $stock_id;
-    public $price;
-    public $quantity;
 
     public function __construct($args) {
         parent::__construct($args);
