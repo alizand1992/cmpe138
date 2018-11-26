@@ -16,7 +16,7 @@ class Portfolio {
 
         $query = "SELECT * FROM portfolio_stocks ps " .
                "JOIN stocks s ON ps.stock_id = s.id " .
-               "WHERE ps.port_id = $args";
+               "WHERE ps.port_id='$args'";
         $result = $mysqli->query($query);
 
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {

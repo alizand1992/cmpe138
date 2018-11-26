@@ -15,4 +15,13 @@ class StockController {
 
         return $this->view->render($res, 'stock/to_buy.html', $data);
     }
+
+    public function buy($req, $res, $args) {
+        $data = $req->getParams();
+        $stock = new StockToBuy($data);
+        $stock->buy();
+
+        $data["available_now"] = StockToBuy::available_now();
+        return $this->view->render($res, 'stock/to_buy.html', $data);
+    }
 }
