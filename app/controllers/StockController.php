@@ -17,6 +17,11 @@ class StockController {
     }
 
     public function buy($req, $res, $args) {
-        var_dump($req->getParams());
+        $data = $req->getParams();
+        $stock = new StockToBuy($data);
+        $stock->buy();
+
+        $data["available_now"] = StockToBuy::available_now();
+        return $this->view->render($res, 'stock/to_buy.html', $data);
     }
 }
