@@ -16,58 +16,88 @@ class StockToBuy extends Stock {
     }
 
     public function buy() {
-        $user_id = $_SESSION["user_id"];
-        $query = "SELECT * FROM stocks_to_sell " .
-               "WHERE stock_id='$this->stock_id' " .
-               "AND id='$this->id'";
+        $abort = false;
+
+        $seller_port = $this->port_id;
 
         $mysqli = Mysqli::mysqli();
+        $user_id = $_SESSION["user_id"];
+        $mysqli->autocommit(false);
+        $mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+        $result = $mysqli->query("SELECT port_id FROM traders WHERE user_id='$user_id'");
+        $buyer_port = $result->fetch_assoc()['port_id'];
+
+        $funds = $mysqli->query("SELECT funds FROM portfolios where id='$buyer_port'")->fetch_assoc()['funds'];
+
+        $query = "SELECT * FROM stocks_to_sell WHERE id='$this->id'";
         $result = $mysqli->query($query);
 
         if ($result->num_rows == 0) {
-            return false;
+            $abort = true;
         }
 
-        $max_quantity = $result->fetch_array(MYSQLI_ASSOC)["quantity"];
+        // MAX AVAILABLE TO BUY
+        $max_quan_avail = $result->fetch_assoc()['quantity'];
 
-        $this->to_buy = $this->quantity;
-        if ($this->quantity > $max_quantity) {
-            $this->to_buy = $max_quantity;
-        }
-
-        $query = "SELECT port_id FROM traders WHERE user_id='$user_id'";
-        $current_port_id = $mysqli->query($query)->fetch_array(MYSQLI_ASSOC)["port_id"];
-
-        $query_1 = "";
-        $query_2 = "";
-
-        if ($this->to_buy == $max_quantity) {
-            $query_1 = "DELETE FROM stocks_to_sell " .
-                     "WHERE id='$this->id'";
-            $query_2 = "UPDATE portfolio_stocks SET quantity='' " .
-                     "WHERE stock_id='$this->stock_id' " .
-                     "AND port_id='$this->port_id'";
+        if ($this->quantity > $max_quan_avail) {
+            $this->to_buy = $max_quan_avail;
         } else {
-            $remainder = $max_quantity - $this->to_buy;
-            $query_1 = "UPDATE stocks_to_sell SET quantity='$remainder' " .
-                     "WHERE id='$this->id'";
+            $this->to_buy = $this->quantity;
         }
 
-        $query_3 = "INSERT INTO portfolio_stocks (stock_id, port_id, price, quantity) " .
-                     "VALUES ('$this->stock_id', '$current_port_id', '$this->price', '$this->to_buy')";
+        if (($this->price * $this->to_buy) > $funds) {
+            $abort = true;
+        }
 
-        // Start transaction for stock transfer
-        $mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-        $mysqli->query($query_1);
-        $mysqli->query($query_3);
+        // SELLER AVAIALIBITY
+        $total_seller_query = "SELECT id, quantity FROM portfolio_stocks " .
+                            "WHERE port_id='$seller_port' " .
+                            "AND stock_id='$this->stock_id'";
+
+        $result = $mysqli->query($total_seller_query);
+        $temp = $this->to_buy;
+        $delete_from = null;
+
+        while ($row = $result->fetch_assoc()) {
+            if ($temp == 0) break;
+
+            if ($temp - $row["quantity"] >= 0) {
+                $delete_from[] = [$row["id"], 0];
+            } else {
+                $delete_from[] = [$row["id"], $row["quantity"] - $temp];
+            }
+
+            $temp -= $row["quantity"];
+        }
+
+
+        if ($this->to_buy == $max_quan_avail) {
+            $mysqli->query("DELETE FROM stocks_to_sell WHERE id='$this->id'");
+        } else {
+            $rem = $max_quan_avail - $this->to_buy;
+            $mysqli->query("UPDATE stocks_to_sell SET quantity='$rem' WHERE id='$this->id'");
+        }
+
+        foreach ($delete_from as $row) {
+            $row_id = $row[0];
+            if ($row[1] == 0) {
+                $mysqli->query("DELETE FROM portfolio_stocks WHERE id='$row_id'");
+            } else {
+                $mysqli->query("UPDATE portfolio_stocks SET quantity='$row[1]' WHERE id='$row_id'");
+            }
+        }
+
+        $mysqli->query("INSERT INTO portfolio_stocks (stock_id, port_id, price, quantity)" .
+                       "VALUES ('$this->stock_id', '$buyer_port', '$this->price', '$this->to_buy')");
         $mysqli->commit();
 
-        $mysqli->close();
-
-        if ($mysqli->errno) {
-            return false;
+        if ($abort) {
+            $mysqli->rollback();
         }
-        return true;
+
+        $mysqli->close();
+        return $mysqli->error;
     }
 
     // Statics
