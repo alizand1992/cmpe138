@@ -46,7 +46,9 @@ class StockToBuy extends Stock {
             $this->to_buy = $this->quantity;
         }
 
-        if (($this->price * $this->to_buy) > $funds) {
+        $total_price = $this->price * $this->to_buy;
+
+        if ($total_price > $funds) {
             $abort = true;
         }
 
@@ -90,10 +92,13 @@ class StockToBuy extends Stock {
 
         $mysqli->query("INSERT INTO portfolio_stocks (stock_id, port_id, price, quantity)" .
                        "VALUES ('$this->stock_id', '$buyer_port', '$this->price', '$this->to_buy')");
-        $mysqli->commit();
 
-        if ($abort) {
-            $mysqli->rollback();
+        $mysqli->query("UPDATE portfolios SET funds = funds - $total_price where id='$buyer_port'");
+
+        $mysqli->query("UPDATE portfolios SET funds = funds + $total_price where id='$seller_port'");
+
+        if (!$abort) {
+            $mysqli->commit();
         }
 
         $mysqli->close();
