@@ -42,9 +42,15 @@ $container[BankAccountController::class] = function($c) {
     return new app\controllers\BankAccountController($view);
 };
 
+$container[StockController::class] = function($c) {
+    $view = $c->get("view");
+    return new app\controllers\StockController($view);
+};
+
 //Define app routes
 include "../app/routes/users.php";
 include "../app/routes/bank_accounts.php";
+include "../app/routes/stocks.php";
 
 $app->get("/", function (Request $request, Response $response, array $args) {
     echo phpinfo();
