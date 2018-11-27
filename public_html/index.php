@@ -47,12 +47,14 @@ $container[UserController::class] = function($c) {
 
 $container[BankAccountController::class] = function($c) {
     $view = $c->get("view");
-    return new app\controllers\BankAccountController($view);
+    $logger = $c->get("logger");
+    return new app\controllers\BankAccountController($view, $logger);
 };
 
 $container[StockController::class] = function($c) {
     $view = $c->get("view");
-    return new app\controllers\StockController($view);
+    $logger = $c->get("logger");
+    return new app\controllers\StockController($view, $logger);
 };
 
 //Define app routes
