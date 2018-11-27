@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<body>
 <?php
 namespace app\Controllers;
 
@@ -102,3 +105,9 @@ class UserController {
         return $user_arr;
     }
 }
+echo "<pre>";
+print_r(UserController);
+echo "</pre>";
+?>
+</body>
+</html>
