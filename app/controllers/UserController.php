@@ -7,9 +7,11 @@ use \app\models\Admin as Admin;
 
 class UserController {
     protected $view;
+    protected $logger;
 
-    public function __construct(\Slim\Views\Twig $view) {
+    public function __construct(\Slim\Views\Twig $view, \Monolog\Logger $logger) {
         $this->view = $view;
+        $this->logger = $logger;
     }
 
     public function login($req, $res, $args) {
@@ -56,6 +58,7 @@ class UserController {
         if ($result->num_rows == 0 || !password_verify(trim($data["password"]), $row["password"])) {
             $mysqli->close();
             $data["error"] = "Incorrect username or password.";
+            $this->logger->addInfo('Incorrect username or password.');
             return $this->login($req, $res, $data);
         }
 

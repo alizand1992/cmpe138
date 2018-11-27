@@ -7,9 +7,11 @@ use \app\models\StockToBuy as StockToBuy;
 
 class StockController {
     protected $view;
+    protected $logger;
 
-    public function __construct(\Slim\Views\Twig $view) {
+    public function __construct(\Slim\Views\Twig $view, \Monolog\Logger $logger) {
         $this->view = $view;
+        $this->logger = $logger;
     }
 
     public function toBuy($req, $res, $args) {

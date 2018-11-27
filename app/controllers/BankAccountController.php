@@ -5,9 +5,11 @@ use \app\models\BankAccount as BankAccount;
 
 class BankAccountController {
     protected $view;
+    protected $logger;
 
-    public function __construct(\Slim\Views\Twig $view) {
+    public function __construct(\Slim\Views\Twig $view, \Monolog\Logger $logger) {
         $this->view = $view;
+        $this->logger = $logger;
     }
 
     public function index($req, $res, $args) {
