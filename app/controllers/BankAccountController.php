@@ -47,8 +47,10 @@ class BankAccountController {
     private function redirect_to_edit($req, $res, $data) {
         if ($data["account"] != false) {
             $data["success"] = "Your changes have been made!";
+            $this->logger->addInfo($data["success"]);
         } else {
             $data["error"] = "There was an error saving the changes!";
+            $this->logger->addInfo($data["error"]);
         }
 
         return $this->view->render($res, 'bankAccount/edit.html', $data);
