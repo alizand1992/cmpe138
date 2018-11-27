@@ -1,6 +1,8 @@
 <?php
 namespace app\Models;
 
+require_once("Mysqli.php");
+
 class Stock {
     public $stock_id;
     public $label;
@@ -33,5 +35,12 @@ class Stock {
         }
 
         return $this;
+    }
+
+    public static function all_stocks() {
+        $mysqli = Mysqli::mysqli();
+        $result = $mysqli->query("SELECT * FROM stocks");
+
+        return $result;
     }
 }

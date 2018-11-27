@@ -1,6 +1,7 @@
 <?php
 namespace app\Controllers;
 
+use \app\models\Stock as Stock;
 use \app\models\StockToBuy as StockToBuy;
 
 class StockController {
@@ -27,6 +28,7 @@ class StockController {
         }
 
         $data["available_now"] = StockToBuy::available_now();
+        $data["stocks"] = Stock::all_stocks();
         return $this->view->render($res, 'stock/to_buy.html', $data);
     }
 }

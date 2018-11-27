@@ -11,10 +11,12 @@
         </tr>
       </thead>
       <tbody>
+        {% for stock in stocks %}
         <tr>
-          <td>1</td>
-          <td>2</td>
+          <td>{{ stock.label }}</td>
+          <td>{{ stock.company_name }}</td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
