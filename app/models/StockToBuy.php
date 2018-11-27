@@ -16,6 +16,40 @@ class StockToBuy extends Stock {
     }
 
     public function buy() {
+        $mysqli = Mysqli::mysqli();
+        $user_id = $_SESSION["user_id"];
+        $this->label = strtoupper($this->label);
+        $result = $mysqli->query("SELECT * FROM stocks_to_sell " .
+                       "WHERE stock_id=(SELECT id FROM stocks WHERE label='$this->label') " .
+                       "AND price <= $this->price " .
+                                 "ORDER BY price");
+
+        $to_sell = null;
+
+        $this->to_buy = $this->quantity;
+
+        while ($row = $result->fetch_assoc()) {
+            if ($row['price'] <= $this->price) {
+                $temp_stock = new StockToBuy($row);
+                if ($this->to_buy >= $temp_stock->quantity) {
+                    $temp_stock->to_buy = $temp_stock->quantity;
+                    $this->to_buy -= $this->quantity;
+                } else {
+                    $temp_stock->to_buy = $this->to_buy;
+                    $this->to_buy = 0;
+                }
+
+                $temp_stock->buy_from_port();
+
+                if ($this->to_buy == 0) {
+                    break;
+                }
+
+            }
+        }
+    }
+
+    public function buy_from_port() {
         $abort = false;
 
         $seller_port = $this->port_id;
