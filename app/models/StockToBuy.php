@@ -19,11 +19,14 @@ class StockToBuy extends Stock {
         $mysqli = Mysqli::mysqli();
         $user_id = $_SESSION["user_id"];
         $this->label = strtoupper($this->label);
+        $result = $mysqli->query("SELECT id FROM stocks WHERE label='$this->label'");
+        $stock_id = $result->fetch_assoc()['id'];
+        $result = $mysqli->query("SELECT port_id FROM traders WHERE user_id='$user_id'");
+        $this->port_id = $result->fetch_assoc()['port_id'];
         $result = $mysqli->query("SELECT * FROM stocks_to_sell " .
-                       "WHERE stock_id=(SELECT id FROM stocks WHERE label='$this->label') " .
-                       "AND price <= $this->price " .
+                                 "WHERE stock_id=$stock_id " .
+                                 "AND price <= $this->price " .
                                  "ORDER BY price");
-
         $to_sell = null;
 
         $this->to_buy = $this->quantity;
@@ -46,6 +49,12 @@ class StockToBuy extends Stock {
                 }
 
             }
+        }
+
+        if ($this->to_buy > 0) {
+            $mysqli->query("INSERT INTO stocks_to_buy (stock_id, port_id, quantity, price) " .
+                           "VALUES ('$stock_id', '$this->port_id', '$this->to_buy', '$this->price')");
+            var_dump($mysqli->error);
         }
     }
 
@@ -155,5 +164,17 @@ class StockToBuy extends Stock {
         }
 
         return $available_now;
+    }
+
+    public static function buy_orders() {
+        $mysqli = Mysqli::mysqli();
+        $user_id = $_SESSION['user_id'];
+        $result = $mysqli->query("SELECT port_id FROM traders WHERE user_id='$user_id'");
+        $port_id = $result->fetch_assoc()['port_id'];
+        $result = $mysqli->query("SELECT stb.id, s.label, s.company_name, stb.quantity, stb.price FROM stocks_to_buy stb " .
+                                 "JOIN stocks s ON stb.stock_id = s.id " .
+                                 "WHERE port_id='$port_id'");
+        var_dump($result);
+        return $result;
     }
 }

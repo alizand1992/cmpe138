@@ -29,6 +29,15 @@ class StockController {
 
         $data["available_now"] = StockToBuy::available_now();
         $data["stocks"] = Stock::all_stocks();
+        $data["buy_orders"] = StockToBuy::buy_orders();
+        return $this->view->render($res, 'stock/to_buy.html', $data);
+    }
+
+    public function cancel_buy_order($req, $res, $args) {
+        $id = $req->getParam('id');
+        $mysqli->query("DELETE FROM stocks_to_buy WHERE id='$id'");
+
+        $data["available_now"] = StockToBuy::available_now();
         return $this->view->render($res, 'stock/to_buy.html', $data);
     }
 }
