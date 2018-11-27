@@ -27,11 +27,13 @@ class UserController {
 
         if ($data["password"] != $data["re_password"]) {
             $data["error"] = "Passwords do not match!";
+            $this->logger->addInfo($data["error"]);
             return $this->register($req, $res, $data);
         }
 
         if (User::exists($data['username'])) {
-             $data["error"] = "The email is already registered.";
+            $data["error"] = "The email is already registered.";
+            $this->logger->addInfo($data["error"]);
             return $this->register($req, $res, $data);
         }
 
@@ -49,6 +51,7 @@ class UserController {
         $mysqli = new \mysqli("localhost", "se_user", "se_user_password", "stock_exchange");
 
         if ($mysqli->connect_errno) {
+            $this->logger->addInfo("login?errorno=$mysqli->connect_errno");
             return $res->withRedirect("login?errorno=$mysqli->connect_errno");
         }
 
@@ -58,7 +61,7 @@ class UserController {
         if ($result->num_rows == 0 || !password_verify(trim($data["password"]), $row["password"])) {
             $mysqli->close();
             $data["error"] = "Incorrect username or password.";
-            $this->logger->addInfo('Incorrect username or password.');
+            $this->logger->addInfo($data["error"]);
             return $this->login($req, $res, $data);
         }
 
@@ -86,8 +89,10 @@ class UserController {
 
         if ($user->save()) {
             $data["success"] = "The user was saved successfully";
+            $this->logger->addInfo($data["success"]);
         } else {
             $data["error"] = "There was an error making your changes!";
+            $this->logger->addInfo($data["error"]);
         }
         return $this->view->render($res, 'user/edit.html', $data);
     }
