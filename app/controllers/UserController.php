@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<body>
+
 <?php
 namespace app\Controllers;
 
@@ -8,11 +6,20 @@ use \app\models\User as User;
 use \app\models\Trader as Trader;
 use \app\models\Admin as Admin;
 
+class UserControllerHelper {
+    static function logger($filename, $data) {
+        $current = file_get_contents($filename);
+        $current .= $data . "\n";
+        file_put_contents($filename, $current);
+    }
+}
+
 class UserController {
-    protected $view;
+    protected $view;    
+    $fname = '../logfile.txt';
 
     public function __construct(\Slim\Views\Twig $view) {
-        $this->view = $view;
+        $this->view = $view;        
     }
 
     public function login($req, $res, $args) {
@@ -28,11 +35,13 @@ class UserController {
 
         if ($data["password"] != $data["re_password"]) {
             $data["error"] = "Passwords do not match!";
+            UserControllerHelper::logger($fname, $data["error"]);
             return $this->register($req, $res, $data);
         }
 
         if (User::exists($data['username'])) {
              $data["error"] = "The email is already registered.";
+             UserControllerHelper::logger($fname, $data["error"]);
             return $this->register($req, $res, $data);
         }
 
@@ -59,6 +68,7 @@ class UserController {
         if ($result->num_rows == 0 || !password_verify(trim($data["password"]), $row["password"])) {
             $mysqli->close();
             $data["error"] = "Incorrect username or password.";
+            UserControllerHelper::logger($fname, $data["error"]);
             return $this->login($req, $res, $data);
         }
 
@@ -86,9 +96,11 @@ class UserController {
 
         if ($user->save()) {
             $data["success"] = "The user was saved successfully";
+            UserControllerHelper::logger($fname, $data["success"]);
         } else {
             $data["error"] = "There was an error making your changes!";
-        }
+            UserControllerHelper::logger($fname, $data["error"]);
+        }        
         return $this->view->render($res, 'user/edit.html', $data);
     }
 
@@ -105,9 +117,3 @@ class UserController {
         return $user_arr;
     }
 }
-echo "<pre>";
-print_r(UserController);
-echo "</pre>";
-?>
-</body>
-</html>
