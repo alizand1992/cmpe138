@@ -15,7 +15,7 @@
       </thead>
       {% for buy_order in buy_orders %}
         <tbody>
-          <form action="cancel_buy_order" method="delete">
+          <form action="cancel_buy_order" method="post">
             <input type="hidden" name="id" value="{{buy_order.id}}" />
           <tr>
             <td>{{ buy_order.label }}</td>

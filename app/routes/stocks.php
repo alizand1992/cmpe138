@@ -8,4 +8,4 @@ $app->get('/stocks/to_buy', \StockController::class . ':toBuy');
 
 $app->post('/stocks/buy', \StockController::class . ':buy');
 
-$app->delete('/stocks/cancel_buy_order', \StockController::class . ':cancel_buy_order');
+$app->post('/stocks/cancel_buy_order', \StockController::class . ':cancel_buy_order');
