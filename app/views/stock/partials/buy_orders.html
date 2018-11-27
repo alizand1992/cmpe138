@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Existing Buy Orders</h4>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Label</th>
+          <th scope="col">Company Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th />
+        </tr>
+      </thead>
+      {% for buy_order in buy_orders %}
+        <tbody>
+          <form action="cancel_buy_order" method="post">
+            <input type="hidden" name="id" value="{{buy_order.id}}" />
+          <tr>
+            <td>{{ buy_order.label }}</td>
+            <td>{{ buy_order.company_name }}</td>
+            <td>${{ buy_order.price|number_format(2, '.', ',') }}</td>
+            <td>{{ buy_order.quantity }}</td>
+            <td><button type="submit" class="btn btn-danger">Cancel</button>
+          </tr>
+        </tbody>
+      {% endfor %}
+    </table>
+  </div>
+</div>
