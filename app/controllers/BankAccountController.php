@@ -28,6 +28,10 @@ class BankAccountController {
         return $this->view->render($res, 'bankAccount/edit.html', $data);
     }
 
+    public function transfer($req,$res, $args) {
+
+    }
+
     public function update($req, $res, $args) {
         $data = $req->getParams();
         $account = new BankAccount($data);
