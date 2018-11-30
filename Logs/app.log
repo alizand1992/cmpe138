@@ -1,2 +1,8 @@
 [2018-11-26 23:39:36] my_logger.INFO: 11/26/2018 11:39:36 pmIncorrect username or password. [] []
 [2018-11-26 23:40:06] my_logger.INFO: Incorrect username or password. [] []
+[2018-11-29 16:57:09] my_logger.INFO: No Such Stock found! [] []
+[2018-11-29 16:58:05] my_logger.INFO: No Such Stock found! [] []
+[2018-11-29 16:58:11] my_logger.INFO: No Such Stock found! [] []
+[2018-11-29 16:58:17] my_logger.INFO: No Such Stock found (ASD)! [] []
+[2018-11-29 17:04:05] my_logger.INFO: Insufficient Funds. [] []
+[2018-11-29 17:04:15] my_logger.INFO: Insufficient Funds. [] []

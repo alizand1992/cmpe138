@@ -27,6 +27,11 @@ class StockToBuy extends Stock {
                                  "WHERE stock_id=$stock_id " .
                                  "AND price <= $this->price " .
                                  "ORDER BY price");
+
+        if (!$result) {
+            return "No Such Stock found ($this->label)!";
+        }
+
         $to_sell = null;
 
         $this->to_buy = $this->quantity;
@@ -47,19 +52,20 @@ class StockToBuy extends Stock {
                 if ($this->to_buy == 0) {
                     break;
                 }
-
             }
         }
 
         if ($this->to_buy > 0) {
             $mysqli->query("INSERT INTO stocks_to_buy (stock_id, port_id, quantity, price) " .
                            "VALUES ('$stock_id', '$this->port_id', '$this->to_buy', '$this->price')");
-            var_dump($mysqli->error);
         }
+
+        return null;
     }
 
     public function buy_from_port() {
         $abort = false;
+        $error = null;
 
         $seller_port = $this->port_id;
 
@@ -77,6 +83,7 @@ class StockToBuy extends Stock {
         $result = $mysqli->query($query);
 
         if ($result->num_rows == 0) {
+            $error = "The requested stock is no longer available. ($this->label)";
             $abort = true;
         }
 
@@ -92,6 +99,7 @@ class StockToBuy extends Stock {
         $total_price = $this->price * $this->to_buy;
 
         if ($total_price > $funds) {
+            $error = "Insufficient Funds.";
             $abort = true;
         }
 
@@ -145,7 +153,7 @@ class StockToBuy extends Stock {
         }
 
         $mysqli->close();
-        return $mysqli->error;
+        return $error;
     }
 
     // Statics

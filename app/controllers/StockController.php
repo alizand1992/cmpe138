@@ -27,9 +27,19 @@ class StockController {
         $stock = new StockToBuy($data);
 
         if ($stock->port_id != null) {
-            $stock->buy_from_port();
+            $result = $stock->buy_from_port();
+
+            if ($result != null) {
+                $data["error"] = $result;
+                $this->logger->addInfo($result);
+            }
         } else {
-            $stock->buy();
+            $result = $stock->buy();
+
+            if ($result != null) {
+                $data["error"] = $result;
+                $this->logger->addInfo($result);
+            }
         }
 
         $data["available_now"] = StockToBuy::available_now();
