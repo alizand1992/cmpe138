@@ -60,7 +60,7 @@ class StockToBuy extends Stock {
                            "VALUES ('$stock_id', '$this->port_id', '$this->to_buy', '$this->price')");
         }
 
-        return null;
+        return "The buy order for ($this->label) has been added!";
     }
 
     public function buy_from_port() {

@@ -6,3 +6,4 @@
 [2018-11-29 16:58:17] my_logger.INFO: No Such Stock found (ASD)! [] []
 [2018-11-29 17:04:05] my_logger.INFO: Insufficient Funds. [] []
 [2018-11-29 17:04:15] my_logger.INFO: Insufficient Funds. [] []
+[2018-11-29 17:22:59] my_logger.INFO: There was an error saving the changes! [] []
