@@ -26,20 +26,42 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Stock Trading</a>
         </div>
+        <!-- Navbar begin -->
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions<span class="caret"></span></a>
+          <li class="active"><a href="./layout.html">Home</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Bank Accounts<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Buy</a></li>
-              <li><a href="#">Sell</a></li>
-              <li><a href="#">Trade</a></li>
+              <li><a href='/bank_accounts'>Index</a></li>
+              <li><a href='/bank_account/new'>New</a></li>
+              <li><a href='/bank_account/edit/{id}'>Edit</a></li>
+              <li><a href='/bank_account/update'>Update</a></li>
+              <li><a href='/bank_account/delete/{id}'>Delete</a></li>
+              <li><a href='/bank_account/create'>Create</a></li>              
             </ul>
           </li>
-          <li><a href="#">Stocks</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Stocks<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href='/stocks'>Index</a></li>
+              <li><a href='/stocks/to_buy'>To Buy</a></li>
+              <li><a href='/stocks/buy'>Buy</a></li>
+            </ul>
+          </li>
+          <!-- Requires Sign In, maybe admin -->
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Users<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href='/user/create_session'>Create Session</a></li>
+              <li><a href='/user/create_user'>Create User</a></li>
+              <li><a href='/user/profile'>Profile</a></li>
+              <li><a href='/user/profile/edit'>Edit</a></li>
+              <li><a href='/user/profile/update'>Update</a></li>
+            </ul>
+          </li>
         </ul>
+        <!-- Navbar end -->
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <!-- Take from Users route -->
+          <li><a href='/user/register'><span class="glyphicon glyphicon-user"></span> Register</a></li>
+          <li><a href='/user/login'><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
       </div>
     </nav>
