@@ -16,6 +16,49 @@ class StockToBuy extends Stock {
     }
 
     public function buy() {
+        $mysqli = Mysqli::mysqli();
+        $user_id = $_SESSION["user_id"];
+        $this->label = strtoupper($this->label);
+        $result = $mysqli->query("SELECT id FROM stocks WHERE label='$this->label'");
+        $stock_id = $result->fetch_assoc()['id'];
+        $result = $mysqli->query("SELECT port_id FROM traders WHERE user_id='$user_id'");
+        $this->port_id = $result->fetch_assoc()['port_id'];
+        $result = $mysqli->query("SELECT * FROM stocks_to_sell " .
+                                 "WHERE stock_id=$stock_id " .
+                                 "AND price <= $this->price " .
+                                 "ORDER BY price");
+        $to_sell = null;
+
+        $this->to_buy = $this->quantity;
+
+        while ($row = $result->fetch_assoc()) {
+            if ($row['price'] <= $this->price) {
+                $temp_stock = new StockToBuy($row);
+                if ($this->to_buy >= $temp_stock->quantity) {
+                    $temp_stock->to_buy = $temp_stock->quantity;
+                    $this->to_buy -= $this->quantity;
+                } else {
+                    $temp_stock->to_buy = $this->to_buy;
+                    $this->to_buy = 0;
+                }
+
+                $temp_stock->buy_from_port();
+
+                if ($this->to_buy == 0) {
+                    break;
+                }
+
+            }
+        }
+
+        if ($this->to_buy > 0) {
+            $mysqli->query("INSERT INTO stocks_to_buy (stock_id, port_id, quantity, price) " .
+                           "VALUES ('$stock_id', '$this->port_id', '$this->to_buy', '$this->price')");
+            var_dump($mysqli->error);
+        }
+    }
+
+    public function buy_from_port() {
         $abort = false;
 
         $seller_port = $this->port_id;
@@ -46,7 +89,9 @@ class StockToBuy extends Stock {
             $this->to_buy = $this->quantity;
         }
 
-        if (($this->price * $this->to_buy) > $funds) {
+        $total_price = $this->price * $this->to_buy;
+
+        if ($total_price > $funds) {
             $abort = true;
         }
 
@@ -90,10 +135,13 @@ class StockToBuy extends Stock {
 
         $mysqli->query("INSERT INTO portfolio_stocks (stock_id, port_id, price, quantity)" .
                        "VALUES ('$this->stock_id', '$buyer_port', '$this->price', '$this->to_buy')");
-        $mysqli->commit();
 
-        if ($abort) {
-            $mysqli->rollback();
+        $mysqli->query("UPDATE portfolios SET funds = funds - $total_price where id='$buyer_port'");
+
+        $mysqli->query("UPDATE portfolios SET funds = funds + $total_price where id='$seller_port'");
+
+        if (!$abort) {
+            $mysqli->commit();
         }
 
         $mysqli->close();
@@ -116,5 +164,17 @@ class StockToBuy extends Stock {
         }
 
         return $available_now;
+    }
+
+    public static function buy_orders() {
+        $mysqli = Mysqli::mysqli();
+        $user_id = $_SESSION['user_id'];
+        $result = $mysqli->query("SELECT port_id FROM traders WHERE user_id='$user_id'");
+        $port_id = $result->fetch_assoc()['port_id'];
+        $result = $mysqli->query("SELECT stb.id, s.label, s.company_name, stb.quantity, stb.price FROM stocks_to_buy stb " .
+                                 "JOIN stocks s ON stb.stock_id = s.id " .
+                                 "WHERE port_id='$port_id'");
+        var_dump($result);
+        return $result;
     }
 }
