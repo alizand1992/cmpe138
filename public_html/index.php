@@ -20,6 +20,13 @@ $app = new Slim\App([
 ]);
 
 $container = $app->getContainer();
+$container["logger"] = function ($c) {
+    $logger = new \Monolog\Logger('my_logger');
+    $file_handler = new \Monolog\Handler\StreamHandler('../Logs/app.log');
+    $logger->pushHandler($file_handler);
+    return $logger;
+};
+
 $container["view"] = function($container) {
     $view = new \Slim\Views\Twig("../app/views", [
         "cache" => false
@@ -34,17 +41,20 @@ $container["view"] = function($container) {
 
 $container[UserController::class] = function($c) {
     $view = $c->get("view");
-    return new app\controllers\UserController($view);
+    $logger = $c->get("logger");
+    return new app\controllers\UserController($view, $logger);
 };
 
 $container[BankAccountController::class] = function($c) {
     $view = $c->get("view");
-    return new app\controllers\BankAccountController($view);
+    $logger = $c->get("logger");
+    return new app\controllers\BankAccountController($view, $logger);
 };
 
 $container[StockController::class] = function($c) {
     $view = $c->get("view");
-    return new app\controllers\StockController($view);
+    $logger = $c->get("logger");
+    return new app\controllers\StockController($view, $logger);
 };
 
 //Define app routes
