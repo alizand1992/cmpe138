@@ -30,6 +30,8 @@ class BankAccountController {
 
     public function transfer($req,$res, $args) {
 
+        $data = [];
+        return $this->view->render($res, 'bankAccount/transfer.html', $data);
     }
 
     public function update($req, $res, $args) {

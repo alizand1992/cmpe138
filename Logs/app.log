@@ -18,3 +18,6 @@
 [2018-11-29 17:54:50] my_logger.INFO: Your changes have been made! [] []
 [2018-11-29 17:56:03] my_logger.INFO: Your changes have been made! [] []
 [2018-11-29 17:56:29] my_logger.INFO: Your changes have been made! [] []
+[2018-12-02 10:56:03] my_logger.INFO: Incorrect username or password. [] []
+[2018-12-02 10:56:06] my_logger.INFO: Incorrect username or password. [] []
+[2018-12-02 10:57:31] my_logger.INFO: Your changes have been made! [] []
