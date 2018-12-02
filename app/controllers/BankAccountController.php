@@ -2,6 +2,7 @@
 namespace app\Controllers;
 
 use \app\models\BankAccount as BankAccount;
+use \app\models\Portfolio as Portfolio;
 
 class BankAccountController {
     protected $view;
@@ -26,6 +27,34 @@ class BankAccountController {
     public function edit($req, $res, $args) {
         $data["account"] = BankAccount::find($args["id"]);
         return $this->view->render($res, 'bankAccount/edit.html', $data);
+    }
+
+    public function transfer($req,$res, $args) {
+        $data["id"] = $args["id"];
+        $data["funds"] = Portfolio::getFunds($_SESSION["user_id"]);
+        if ($data["funds"] == -1) {
+            $data["error"] = "There was an error retrieving funds. Please try again later.";
+            $this->logger->addInfo($data["error"]);
+        }
+        return $this->view->render($res, 'bankAccount/transfer.html', $data);
+    }
+
+    public function transfer_from_port($req,$res, $args) {
+        $user_id = $_SESSION["user_id"];
+        $amount = $req->getParam("amount");
+        $args["id"] = $req->getParam("id");
+
+        $result = BankAccount::transfer_from_port($user_id, $amount);
+        $this->transfer($req, $res, $args);
+    }
+
+    public function transfer_to_port($req,$res, $args) {
+        $user_id = $_SESSION["user_id"];
+        $amount = $req->getParam("amount");
+        $args["id"] = $req->getParam("id");
+
+        $result = BankAccount::transfer_to_port($user_id, $amount);
+        $this->transfer($req, $res, $args);
     }
 
     public function update($req, $res, $args) {

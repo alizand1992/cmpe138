@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  {% if error %}
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Transfer from bank account to portfolio</h4>
+        </div>
+        <div class="card-body">
+          <form action="/bank_account/transfer_to_port" method="post">
+            <input type="hidden" name="id" id="id" value="{{id}}" />
+            <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input type="text" name="amount" class="form-control"/>
+            </div>
+            <div class="form-group text-right">
+              <button class="btn btn-primary">Transfer to Portfolio</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Transfer from portfolio to bank account</h4>
+        </div>
+        <div class="card-body">
+          <form action="/bank_account/transfer_from_port" method="post">
+            <input type="hidden" name="id" id="id" value="{{id}}" />
+            <div class="form-group">
+              Available funds: ${{ funds|number_format(2, '.', ',') }}
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input type="text" name="amount" class="form-control"/>
+            </div>
+            <div class="form-group text-right">
+              <button class="btn btn-primary">Transfer to bank</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-right">
+      <a href="/user/profile" class="btn btn-danger">Back</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -41,7 +41,7 @@ class User {
     }
 
     public function save() {
-        if ($this->username == null || $this->screen_name == null ||
+        if ($this->username == null ||
             $this->f_name == null || $this->l_name == null || $this->bday == null) {
             return false;
         }

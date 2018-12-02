@@ -13,3 +13,9 @@ $app->post('/bank_account/update', \BankAccountController::class . ':update');
 $app->delete('/bank_account/delete/{id}', \BankAccountController::class . ':delete');
 
 $app->post('/bank_account/create', \BankAccountController::class . ':create');
+
+$app->get('/bank_account/transfer/{id}', \BankAccountController::class . ':transfer');
+
+$app->post('/bank_account/transfer_to_port', \BankAccountController::class . ':transfer_to_port');
+
+$app->post('/bank_account/transfer_from_port', \BankAccountController::class . ':transfer_from_port');
