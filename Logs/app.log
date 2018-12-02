@@ -21,3 +21,5 @@
 [2018-12-02 10:56:03] my_logger.INFO: Incorrect username or password. [] []
 [2018-12-02 10:56:06] my_logger.INFO: Incorrect username or password. [] []
 [2018-12-02 10:57:31] my_logger.INFO: Your changes have been made! [] []
+[2018-12-02 11:24:37] my_logger.INFO: There was an error retrieving funds. Please try again later. [] []
+[2018-12-02 11:24:42] my_logger.INFO: There was an error retrieving funds. Please try again later. [] []
