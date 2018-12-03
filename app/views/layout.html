@@ -37,9 +37,11 @@
               Bank Accounts
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href='/bank_account/update'>Update</a>              
+              <a class="dropdown-item" href='/bank_accounts'>Index</a>              
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href='/bank_account/create'>Create</a>                                  
+              <a class="dropdown-item" href='/bank_account/new'>New</a>            
+              <div class="dropdown-divider"></div>                      
+              <a class="dropdown-item" href='/bank_account/edit/{id}'>Edit</a>                                                                               
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -47,9 +49,9 @@
               Stocks
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">              
-              <a class="dropdown-item" href='/stocks/buy'>Buy</a>        
+              <a class="dropdown-item" href='/stocks'>Index</a>        
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href='/stocks/cancel_buy_order'>Cancel Buy Order</a>                                          
+              <a class="dropdown-item" href='/stocks/to_buy'>To Buy</a>                                          
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -57,11 +59,9 @@
               Users
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href='/user/create_session'>Create Session</a>
+              <a class="dropdown-item" href='/user/profile'>Profile</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href='/user/create_user'>Create User</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href='/user/profile/update'>Update</a>                    
+              <a class="dropdown-item" href='/user/profile/edit'>Edit</a>
             </div>
           </li>
         </ul>
