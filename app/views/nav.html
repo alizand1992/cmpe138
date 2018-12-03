@@ -2,7 +2,7 @@
 
 {% block nav %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="/">
     Stock Trading
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,8 +11,8 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% if user %}/user/profile{% else %}/{%endif%}">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{% if user %}/user/profile{% else %}/{%endif%}">Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,8 +42,24 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li class="nav-item active"><a href="/user/register"><span class="glyphicon glyphicon-user"></span> Register</a></li>
-      <li class="nav-item active"><a href="/user/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      {% if user_id %}
+        <li class="nav-item">
+          <a href="/user/logout">
+            Logout
+          </a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a href="/user/register">
+            Register
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/user/login">
+            Login
+          </a>
+        </li>
+      {% endif %}
     </ul>
 </nav>
 {% endblock %}

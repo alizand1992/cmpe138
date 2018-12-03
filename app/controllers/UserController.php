@@ -8,10 +8,12 @@ use \app\models\Admin as Admin;
 class UserController {
     protected $view;
     protected $logger;
+    protected $user_id;
 
     public function __construct(\Slim\Views\Twig $view, \Monolog\Logger $logger) {
         $this->view = $view;
         $this->logger = $logger;
+        $this->user_id = $_SESSION["user_id"];
     }
 
     public function login($req, $res, $args) {
@@ -71,20 +73,30 @@ class UserController {
     }
 
     public function profile($req, $res, $args) {
-        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+        if ($this->user_id == null) {
+            return $res->withRedirect("/");
+        }
 
+        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+        $user_arr["user_id"] = $_SESSION["user_id"];
         return $this->view->render($res, 'user/profile.html', $user_arr);
     }
 
     public function edit($req, $res, $args) {
-        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+        if ($this->user_id == null) {
+            return $res->withRedirect("/");
+        }
 
+        $user_arr = $this->getUserArray($_SESSION["user_id"]);
+        $user_arr["user_id"] = $this->user_id;
         return $this->view->render($res, 'user/edit.html', $user_arr);
     }
 
     public function update($req, $res, $args) {
         $data = $req->getParams();
         $data["id"] = $_SESSION["user_id"];
+        $_SESSION["user_id"] = $_data["id"];
+        $data["user_id"] = $_SESSION["user_id"];
         $user = new User($data);
 
         if ($user->save()) {
@@ -108,5 +120,11 @@ class UserController {
         $user_arr["portfolio"] = (array)$user_arr["\0app\\Models\\Trader\0portfolio"];
         unset($user_arr["app\\Models\\Trader\0portfolio"]);
         return $user_arr;
+    }
+
+    public function logout($req, $res, $args) {
+        $this->user_id = null;
+        unset($_SESSION["user_id"]);
+        return $res->withRedirect("/");
     }
 }

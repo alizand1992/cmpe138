@@ -6,25 +6,41 @@ use \app\models\BankAccount as BankAccount;
 class BankAccountController {
     protected $view;
     protected $logger;
+    protected $user_id;
 
     public function __construct(\Slim\Views\Twig $view, \Monolog\Logger $logger) {
         $this->view = $view;
         $this->logger = $logger;
+        $this->user_id = $_SESSION["user_id"];
     }
 
     public function index($req, $res, $args) {
+        if ($this->user_id == null) {
+            return $res->withRedirect("/");
+        }
+
         $accounts = BankAccount::findUserAccounts($_SESSION["user_id"]);
         $args["accounts"] = (array)$accounts;
-
+        $args["user_id"] = $this->user_id;
         return $this->view->render($res, 'bankAccount/index.html', $args);
     }
 
     public function new($req, $res, $args) {
+        if ($this->user_id == null) {
+            return $res->withRedirect("/");
+        }
+
+        $args["user_id"] = $this->user_id;
         return $this->view->render($res, 'bankAccount/new.html', $args);
     }
 
     public function edit($req, $res, $args) {
+        if ($this->user_id == null) {
+            return $res->withRedirect("/");
+        }
+
         $data["account"] = BankAccount::find($args["id"]);
+        $data["user_id"] = $this->user_id;
         return $this->view->render($res, 'bankAccount/edit.html', $data);
     }
 
