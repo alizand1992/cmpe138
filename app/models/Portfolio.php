@@ -23,4 +23,15 @@ class Portfolio {
             $this->stocks[] = new Stock($row);
         }
     }
+
+    public static function getFunds($user_id) {
+        $mysqli = \app\Models\Mysqli::mysqli();
+        $result = $mysqli->query("SELECT funds FROM portfolios WHERE id=(SELECT port_id FROM traders WHERE user_id='$user_id')");
+
+        if ($result != false) {
+            return $result->fetch_assoc()['funds'];
+        }
+
+        return -1;
+    }
 }

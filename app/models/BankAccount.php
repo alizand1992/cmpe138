@@ -85,4 +85,24 @@ class BankAccount {
 
         return (array)(new BankAccount($row));
     }
+
+    public static function transfer_to_port($user_id, $amount) {
+        $mysqli = Mysqli::mysqli();
+        $query = "UPDATE portfolios SET funds = funds + $amount WHERE id=(SELECT port_id FROM traders WHERE user_id='$user_id')";
+
+        return $mysqli->query($query);
+    }
+
+    public static function transfer_from_port($user_id, $amount) {
+        $mysqli = Mysqli::mysqli();
+        $query = "SELECT funds FROM portfolios WHERE id=(SELECT port_id FROM traders WHERE user_id='$user_id')";
+        $result = $mysqli->query($query);
+
+        if ($result != null && $amount <= $result->fetch_assoc()["funds"]) {
+            $query = "UPDATE portfolios SET funds = funds - $amount WHERE id=(SELECT port_id FROM traders WHERE user_id='$user_id')";
+            return $mysqli->query($query);
+        }
+
+        return false;
+    }
 }
