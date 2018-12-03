@@ -35,7 +35,6 @@ $container["view"] = function($container) {
     $router = $container->get("router");
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new Slim\Views\TwigExtension($router, $uri));
-
     return $view;
 };
 
@@ -63,8 +62,11 @@ include "../app/routes/bank_accounts.php";
 include "../app/routes/stocks.php";
 
 $app->get("/", function (Request $request, Response $response, array $args) {
-    echo phpinfo();
-
+    if ($_SESSION["user_id"]) {
+        return $response->withRedirect("/user/profile");
+    } else {
+        return $response->withRedirect("/user/login");
+    }
 });
 
 $app->run();

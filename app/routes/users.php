@@ -22,3 +22,6 @@ $app->get('/user/profile/edit', \UserController::class . ':edit');
 
 // POST REGISTER
 $app->post('/user/profile/update', \UserController::class . ':update');
+
+// GET LOGOUT
+$app->get('/user/logout', \UserController::class . ':logout');
