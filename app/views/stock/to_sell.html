@@ -2,11 +2,34 @@
 
 {% block content %}
 <div class="container">
+  {% if error %}
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
   <div class="row">
     <div class="col-12">
-      {% include 'stock/partials/to_sell.html' %}
+      {% include 'stock/partials/available_now.html' %}
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-12">
+      {% include 'stock/partials/sell_orders.html' %}
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-6">
+      {% include 'stock/partials/stock_sell_fields.html' %}
+    </div>
+    <div class="col-6">
+      {% include 'stock/partials/all_stocks.html' %}
     </div>
   </div>
 </div>
-
 {% endblock %}
