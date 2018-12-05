@@ -24,6 +24,12 @@ class User {
         foreach ($args as $value) {
             $this->__set(array_search($value, $args), $value);
         }
+
+        if ($this->id != null && $this->username == null) {
+            $mysqli = Mysqli::mysqli();
+            $result = $mysqli->query("SELECT * FROM users WHERE id='id'");
+            this($result->fetch_assoc()[0]);
+        }
     }
 
     public function __get($property) {
@@ -52,7 +58,7 @@ class User {
 
         if ($username_taken) {
             $mysqli->close();
-            return false;
+            return $mysqli->error;
         }
 
         $query = "UPDATE users set " .
@@ -66,7 +72,7 @@ class User {
         $mysqli->close();
 
         if ($mysqli->errno) {
-            return false;
+            return $mysqli->error;
         }
         return true;
     }
